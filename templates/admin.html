@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Panel - X Host Server</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0a0e1a 0%, #0d1117 100%);
+            font-family: 'Poppins', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            padding: 25px;
+            position: relative;
+            min-height: 100vh;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(79,195,247,0.03) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .container {
+            max-width: 1500px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header {
+            background: rgba(13,31,60,0.6);
+            backdrop-filter: blur(20px);
+            padding: 20px 30px;
+            border-radius: 24px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid rgba(79,195,247,0.2);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, #4fc3f7, #2196f3);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 700;
+        }
+        
+        .security-link {
+            background: linear-gradient(135deg, #ff4444, #cc0000);
+            padding: 8px 20px;
+            border-radius: 40px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .security-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255,68,68,0.4);
+        }
+        
+        h2 {
+            color: #ffaa66;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            position: relative;
+            display: inline-block;
+        }
+        
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(90deg, #ffaa66, transparent);
+            border-radius: 3px;
+        }
+        
+        .back-btn {
+            color: #4fc3f7;
+            text-decoration: none;
+            background: rgba(79,195,247,0.1);
+            padding: 10px 28px;
+            border-radius: 40px;
+            border: 1px solid rgba(79,195,247,0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 500;
+        }
+        
+        .back-btn:hover {
+            background: #4fc3f7;
+            color: #0a1628;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(79,195,247,0.3);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, rgba(13,31,60,0.7), rgba(10,22,40,0.5));
+            backdrop-filter: blur(15px);
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid rgba(79,195,247,0.15);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(79,195,247,0.4);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #4fc3f7, #2196f3);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 8px;
+        }
+        
+        .stat-card div:last-child {
+            color: #8b9bb0;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .card {
+            background: rgba(13,31,60,0.5);
+            backdrop-filter: blur(15px);
+            border-radius: 24px;
+            padding: 28px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(79,195,247,0.15);
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            border-color: rgba(79,195,247,0.3);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+        }
+        
+        input, select {
+            background: rgba(10,22,40,0.8);
+            border: 1px solid rgba(79,195,247,0.2);
+            padding: 14px 16px;
+            border-radius: 14px;
+            color: white;
+            font-size: 0.9rem;
+            outline: none;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+        
+        input:focus, select:focus {
+            border-color: #4fc3f7;
+            box-shadow: 0 0 15px rgba(79,195,247,0.2);
+        }
+        
+        .create-btn {
+            background: linear-gradient(135deg, #00aa33, #008822);
+            border: none;
+            padding: 14px 28px;
+            border-radius: 40px;
+            font-weight: 700;
+            cursor: pointer;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-top: 20px;
+            font-size: 0.95rem;
+            min-width: 180px;
+        }
+        
+        .create-btn:hover {
+            background: linear-gradient(135deg, #00cc44, #00aa33);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,170,51,0.4);
+        }
+        
+        .create-btn-server {
+            background: linear-gradient(135deg, #2d9cdb, #2196f3);
+        }
+        
+        .create-btn-server:hover {
+            background: linear-gradient(135deg, #3dadf0, #2d9cdb);
+            box-shadow: 0 8px 25px rgba(45,156,219,0.4);
+        }
+        
+        .delete-btn { 
+            color: #ff8888; 
+            text-decoration: none;
+            background: rgba(204,51,51,0.15);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        
+        .delete-btn:hover {
+            background: #cc3333;
+            color: white;
+            transform: scale(1.05);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 14px 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(79,195,247,0.1);
+            color: #ccddee;
+        }
+        
+        th {
+            color: #4fc3f7;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        tr:hover {
+            background: rgba(79,195,247,0.05);
+        }
+        
+        .admin-badge {
+            background: linear-gradient(135deg, #ffaa33, #ff8800);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            color: #0a1628;
+            display: inline-block;
+        }
+        
+        .user-badge {
+            background: linear-gradient(135deg, #4fc3f7, #2196f3);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            color: #0a1628;
+            display: inline-block;
+        }
+        
+        .badge-running {
+            background: #2ecc71;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            color: #0a1628;
+            display: inline-block;
+        }
+        
+        .badge-stopped {
+            background: #e74c3c;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            color: white;
+            display: inline-block;
+        }
+        
+        .view-server {
+            color: #4fc3f7;
+            text-decoration: none;
+            margin-right: 10px;
+        }
+        
+        .view-server:hover {
+            color: #ffaa66;
+        }
+        
+        .protected-text {
+            color: #8b9bb0;
+            font-size: 0.7rem;
+        }
+        
+        @media (max-width: 768px) {
+            body { padding: 15px; }
+            .form-grid { grid-template-columns: 1fr; }
+            .header { flex-direction: column; text-align: center; }
+            .header-left { flex-direction: column; }
+            th, td { padding: 10px 8px; font-size: 0.7rem; }
+        }
+        
+        optgroup {
+            color: #ffaa66;
+            background: #0a1628;
+            font-weight: 600;
+        }
+        
+        option {
+            color: white;
+            background: #0d1f3c;
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .card {
+            animation: fadeInUp 0.5s ease-out forwards;
+        }
+        
+        .overflow-x {
+            overflow-x: auto;
+        }
+        
+        .empty-message {
+            color: #8b9bb0;
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-left">
+                <h1>🔧 Admin Control Panel</h1>
+                <a href="/admin/security" class="security-link">
+                    🛡️ SCRUTY & SECURITY
+                </a>
+            </div>
+            <a href="/dashboard" class="back-btn">← Dashboard</a>
+        </div>
+        
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">{{ users|length if users else 0 }}</div>
+                <div>Total Users</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ servers|length if servers else 0 }}</div>
+                <div>Total Servers</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ custom_orders|length if custom_orders else 0 }}</div>
+                <div>Custom Orders</div>
+            </div>
+        </div>
+        
+        <!-- Add New User -->
+        <div class="card">
+            <h2>➕ Add New User</h2>
+            <form method="POST" action="/admin/add_user">
+                <div class="form-grid">
+                    <input type="text" name="username" placeholder="Username" required>
+                    <input type="text" name="password" placeholder="Password" required>
+                    
+                    <select name="cpu" required>
+                        <optgroup label="AMD Ryzen Series">
+                            <option value="AMD Ryzen 9 7950X">AMD Ryzen 9 7950X (5.7 GHz)</option>
+                            <option value="AMD Ryzen 9 7900X">AMD Ryzen 9 7900X (5.6 GHz)</option>
+                            <option value="AMD Ryzen 7 7800X3D">AMD Ryzen 7 7800X3D (5.0 GHz)</option>
+                            <option value="AMD Ryzen 5 7600X">AMD Ryzen 5 7600X (5.3 GHz)</option>
+                            <option value="AMD Ryzen 9 5950X">AMD Ryzen 9 5950X (4.9 GHz)</option>
+                            <option value="AMD Ryzen 7 5800X3D">AMD Ryzen 7 5800X3D (4.5 GHz)</option>
+                        </optgroup>
+                        <optgroup label="Intel Core Series">
+                            <option value="Intel Core i9-13900K">Intel Core i9-13900K (5.8 GHz)</option>
+                            <option value="Intel Core i7-13700K">Intel Core i7-13700K (5.4 GHz)</option>
+                            <option value="Intel Core i5-13600K">Intel Core i5-13600K (5.1 GHz)</option>
+                            <option value="Intel Core i9-12900K">Intel Core i9-12900K (5.2 GHz)</option>
+                            <option value="Intel Core i7-12700K">Intel Core i7-12700K (5.0 GHz)</option>
+                            <option value="Intel Core i5-12600K">Intel Core i5-12600K (4.9 GHz)</option>
+                        </optgroup>
+                        <optgroup label="Server Grade">
+                            <option value="AMD EPYC 9654">AMD EPYC 9654 (2.4 GHz - 96 Cores)</option>
+                            <option value="Intel Xeon Platinum 8480+">Intel Xeon Platinum 8480+ (2.0 GHz)</option>
+                        </optgroup>
+                        <optgroup label="Standard">
+                            <option value="Ryzen 5 3500X">Ryzen 5 3500X (3.8 GHz)</option>
+                            <option value="Ryzen 7 3700X">Ryzen 7 3700X (4.2 GHz)</option>
+                            <option value="Intel Core i3">Intel Core i3 (2.5 GHz)</option>
+                            <option value="Snapdragon">Snapdragon (2.5 GHz)</option>
+                        </optgroup>
+                    </select>
+                    
+                    <select name="ram" required>
+                        <option value="4 GB">4 GB RAM</option>
+                        <option value="8 GB">8 GB RAM</option>
+                        <option value="16 GB">16 GB RAM</option>
+                        <option value="32 GB">32 GB RAM</option>
+                        <option value="64 GB">64 GB RAM</option>
+                        <option value="128 GB">128 GB RAM</option>
+                        <option value="256 GB">256 GB RAM</option>
+                    </select>
+                    
+                    <select name="storage" required>
+                        <option value="50 GB">50 GB SSD</option>
+                        <option value="100 GB">100 GB SSD</option>
+                        <option value="200 GB">200 GB SSD</option>
+                        <option value="500 GB">500 GB SSD</option>
+                        <option value="1 TB">1 TB NVMe</option>
+                        <option value="2 TB">2 TB NVMe</option>
+                    </select>
+                    
+                    <select name="cores" required>
+                        <option value="2">2 Cores</option>
+                        <option value="4">4 Cores</option>
+                        <option value="6">6 Cores</option>
+                        <option value="8">8 Cores</option>
+                        <option value="12">12 Cores</option>
+                        <option value="16">16 Cores</option>
+                        <option value="24">24 Cores</option>
+                        <option value="32">32 Cores</option>
+                    </select>
+                    
+                    <input type="text" name="expiry" placeholder="Expiry (YYYY-MM-DD or Unlimited)">
+                </div>
+                <button type="submit" class="create-btn">✅ Create User</button>
+            </form>
+        </div>
+        
+        <!-- Create Server for User -->
+        <div class="card">
+            <h2>🖥️ Create Server for User</h2>
+            <form method="POST" action="/admin_create_server">
+                <div class="form-grid">
+                    <input type="text" name="username" placeholder="Username" required>
+                    <input type="text" name="server_name" placeholder="Server Name" required>
+                    
+                    <select name="cpu" required>
+                        <option value="AMD Ryzen 9 7950X">AMD Ryzen 9 7950X (5.7 GHz)</option>
+                        <option value="AMD Ryzen 9 7900X">AMD Ryzen 9 7900X (5.6 GHz)</option>
+                        <option value="Intel Core i9-13900K">Intel Core i9-13900K (5.8 GHz)</option>
+                        <option value="AMD EPYC 9654">AMD EPYC 9654 (2.4 GHz - 96 Cores)</option>
+                        <option value="Ryzen 7 3700X">Ryzen 7 3700X (4.2 GHz)</option>
+                    </select>
+                    
+                    <select name="ram" required>
+                        <option value="4 GB">4 GB RAM</option>
+                        <option value="8 GB">8 GB RAM</option>
+                        <option value="16 GB">16 GB RAM</option>
+                        <option value="32 GB">32 GB RAM</option>
+                        <option value="64 GB">64 GB RAM</option>
+                    </select>
+                    
+                    <select name="storage" required>
+                        <option value="50 GB">50 GB SSD</option>
+                        <option value="100 GB">100 GB SSD</option>
+                        <option value="200 GB">200 GB SSD</option>
+                        <option value="500 GB">500 GB SSD</option>
+                        <option value="1 TB">1 TB NVMe</option>
+                    </select>
+                    
+                    <select name="cores" required>
+                        <option value="2">2 Cores</option>
+                        <option value="4">4 Cores</option>
+                        <option value="8">8 Cores</option>
+                        <option value="16">16 Cores</option>
+                    </select>
+                </div>
+                <button type="submit" class="create-btn create-btn-server">🚀 Create Server</button>
+            </form>
+        </div>
+        
+        <!-- Users List -->
+        <div class="card">
+            <h2>👥 System Users</h2>
+            <div class="overflow-x">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Role</th>
+                            <th>CPU</th>
+                            <th>RAM</th>
+                            <th>Storage</th>
+                            <th>Expiry</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if users and users.items %}
+                            {% for username, user_data in users.items() %}
+                            <tr>
+                                <td><strong>{{ username }}</strong></td>
+                                <td>
+                                    {% if user_data.role == 'admin' %}
+                                    <span class="admin-badge">Admin</span>
+                                    {% else %}
+                                    <span class="user-badge">User</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ user_data.cpu if user_data.cpu else '-' }}</td>
+                                <td>{{ user_data.ram if user_data.ram else '-' }}</td>
+                                <td>{{ user_data.storage if user_data.storage else '-' }}</td>
+                                <td>{{ user_data.expiry if user_data.expiry else 'Unlimited' }}</td>
+                                <td>
+                                    {% if username != 'xza123' %}
+                                    <a href="/admin/delete_user/{{ username }}" class="delete-btn" onclick="return confirm('Delete user {{ username }}?')">Delete</a>
+                                    {% else %}
+                                    <span class="protected-text">Protected</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="7" class="empty-message">No users found</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Servers List -->
+        <div class="card">
+            <h2>🖥️ All Servers</h2>
+            <div class="overflow-x">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Server ID</th>
+                            <th>Name</th>
+                            <th>Owner</th>
+                            <th>Status</th>
+                            <th>CPU</th>
+                            <th>RAM</th>
+                            <th>Storage</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if servers and servers.items %}
+                            {% for server_id, server_data in servers.items() %}
+                            <tr>
+                                <td><code>{{ server_id[:8] }}</code></td>
+                                <td>{{ server_data.name if server_data.name else 'Unknown' }}</td>
+                                <td>{{ server_data.owner if server_data.owner else 'Unknown' }}</td>
+                                <td>
+                                    {% if server_data.status == 'running' %}
+                                    <span class="badge-running">Running</span>
+                                    {% else %}
+                                    <span class="badge-stopped">Stopped</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ server_data.cpu_type if server_data.cpu_type else '-' }}</td>
+                                <td>{{ server_data.ram if server_data.ram else '-' }}</td>
+                                <td>{{ server_data.storage if server_data.storage else '-' }}</td>
+                                <td>
+                                    <a href="/terminal/{{ server_id }}" class="view-server">Terminal</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="8" class="empty-message">No servers found</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Custom Orders -->
+        <div class="card">
+            <h2>📦 Custom Orders</h2>
+            {% if custom_orders and custom_orders|length > 0 %}
+                {% for order in custom_orders %}
+                <div class="banned-item" style="border-left-color: #4fc3f7; padding: 14px 18px; margin: 10px 0; border-radius: 14px; display: flex; justify-content: space-between; align-items: center; background: rgba(79,195,247,0.05);">
+                    <div>
+                        <strong>Order #{{ order.id[:8] if order.id else 'N/A' }}</strong>
+                        <span style="color:#8b9bb0; margin-left:15px;">User: {{ order.username if order.username else 'Unknown' }}</span>
+                        <span style="color:#8b9bb0; margin-left:15px;">CPU: {{ order.cpu if order.cpu else '-' }}</span>
+                        <span style="color:#8b9bb0; margin-left:15px;">RAM: {{ order.ram if order.ram else '-' }}</span>
+                    </div>
+                    <a href="/admin/delete_custom_order/{{ order.id }}" class="delete-btn" onclick="return confirm('Delete order?')">Delete</a>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p class="empty-message">📭 No custom orders</p>
+            {% endif %}
+        </div>
+        
+        <!-- Blocked Countries Link -->
+        <div class="card">
+            <h2>🌍 Country Blocking</h2>
+            <div style="text-align: center; padding: 20px;">
+                <a href="/admin/blocked_countries" style="background: linear-gradient(135deg, #2d9cdb, #2196f3); color: white; text-decoration: none; padding: 12px 30px; border-radius: 40px; display: inline-block; transition: all 0.3s ease;">Manage Blocked Countries</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

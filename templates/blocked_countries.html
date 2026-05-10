@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Blocked Countries - Host X Server</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0a0e1a 0%, #0d1117 100%);
+            font-family: 'Poppins', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            padding: 25px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: rgba(13,31,60,0.6);
+            backdrop-filter: blur(20px);
+            padding: 20px 30px;
+            border-radius: 24px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid rgba(79,195,247,0.2);
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, #4fc3f7, #2196f3);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        h2 {
+            color: #ffaa66;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+        
+        .back-btn {
+            color: #4fc3f7;
+            text-decoration: none;
+            background: rgba(79,195,247,0.1);
+            padding: 10px 28px;
+            border-radius: 40px;
+            border: 1px solid rgba(79,195,247,0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background: #4fc3f7;
+            color: #0a1628;
+        }
+        
+        .card {
+            background: rgba(13,31,60,0.5);
+            backdrop-filter: blur(15px);
+            border-radius: 24px;
+            padding: 28px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(79,195,247,0.15);
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 18px;
+            align-items: end;
+        }
+        
+        input, select {
+            background: rgba(10,22,40,0.8);
+            border: 1px solid rgba(79,195,247,0.2);
+            padding: 14px 16px;
+            border-radius: 14px;
+            color: white;
+            font-size: 0.9rem;
+            outline: none;
+            width: 100%;
+        }
+        
+        input:focus, select:focus {
+            border-color: #4fc3f7;
+            box-shadow: 0 0 15px rgba(79,195,247,0.2);
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #2d9cdb, #2196f3);
+            border: none;
+            padding: 14px 28px;
+            border-radius: 40px;
+            font-weight: 700;
+            cursor: pointer;
+            color: white;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(45,156,219,0.4);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+        
+        .btn-danger:hover {
+            box-shadow: 0 8px 25px rgba(231,76,60,0.4);
+        }
+        
+        .countries-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .country-item {
+            background: rgba(10,22,40,0.6);
+            border: 1px solid rgba(79,195,247,0.2);
+            border-radius: 14px;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        
+        .country-item:hover {
+            border-color: #e74c3c;
+            transform: translateX(5px);
+        }
+        
+        .country-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #ffaa66;
+        }
+        
+        .country-flag {
+            font-size: 1.5rem;
+            margin-right: 10px;
+        }
+        
+        .remove-btn {
+            background: rgba(231,76,60,0.2);
+            color: #ff8888;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 0.8rem;
+        }
+        
+        .remove-btn:hover {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .empty-message {
+            text-align: center;
+            padding: 40px;
+            color: #8b9bb0;
+        }
+        
+        .info-text {
+            background: rgba(79,195,247,0.1);
+            border-left: 3px solid #4fc3f7;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            color: #8b9bb0;
+            font-size: 0.85rem;
+        }
+        
+        @media (max-width: 768px) {
+            body { padding: 15px; }
+            .form-grid { grid-template-columns: 1fr; }
+            .header { flex-direction: column; gap: 15px; text-align: center; }
+            .countries-list { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌍 Blocked Countries</h1>
+            <a href="/admin" class="back-btn">← Back to Admin</a>
+        </div>
+        
+        <div class="card">
+            <h2>➕ Add Country to Block</h2>
+            <div class="info-text">
+                ℹ️ Users from blocked countries will not be able to access the platform. 
+                Select a country code (e.g., US, RU, CN, IR) to block access.
+            </div>
+            <form method="POST" action="/admin/add_blocked_country">
+                <div class="form-grid">
+                    <select name="country" required>
+                        <option value="">-- Select Country --</option>
+                        <optgroup label="🔴 High Risk Countries">
+                            <option value="RU">🇷🇺 Russia (RU)</option>
+                            <option value="CN">🇨🇳 China (CN)</option>
+                            <option value="KP">🇰🇵 North Korea (KP)</option>
+                            <option value="IR">🇮🇷 Iran (IR)</option>
+                            <option value="SY">🇸🇾 Syria (SY)</option>
+                            <option value="CU">🇨🇺 Cuba (CU)</option>
+                        </optgroup>
+                        <optgroup label="🟠 Medium Risk Countries">
+                            <option value="VE">🇻🇪 Venezuela (VE)</option>
+                            <option value="NG">🇳🇬 Nigeria (NG)</option>
+                            <option value="PK">🇵🇰 Pakistan (PK)</option>
+                            <option value="AF">🇦🇫 Afghanistan (AF)</option>
+                            <option value="IQ">🇮🇶 Iraq (IQ)</option>
+                            <option value="LY">🇱🇾 Libya (LY)</option>
+                        </optgroup>
+                        <optgroup label="🟡 Other Countries">
+                            <option value="BY">🇧🇾 Belarus (BY)</option>
+                            <option value="MM">🇲🇲 Myanmar (MM)</option>
+                            <option value="SD">🇸🇩 Sudan (SD)</option>
+                            <option value="SO">🇸🇴 Somalia (SO)</option>
+                            <option value="YE">🇾🇪 Yemen (YE)</option>
+                        </optgroup>
+                    </select>
+                    <button type="submit" class="btn">➕ Block Country</button>
+                </div>
+            </form>
+        </div>
+        
+        <div class="card">
+            <h2>🚫 Blocked Countries List</h2>
+            {% if blocked and blocked|length > 0 %}
+                <div class="countries-list">
+                    {% for country in blocked %}
+                    <div class="country-item">
+                        <div>
+                            {% if country == 'US' %}🇺🇸
+                            {% elif country == 'RU' %}🇷🇺
+                            {% elif country == 'CN' %}🇨🇳
+                            {% elif country == 'IR' %}🇮🇷
+                            {% elif country == 'KP' %}🇰🇵
+                            {% elif country == 'SY' %}🇸🇾
+                            {% elif country == 'CU' %}🇨🇺
+                            {% elif country == 'VE' %}🇻🇪
+                            {% elif country == 'NG' %}🇳🇬
+                            {% elif country == 'PK' %}🇵🇰
+                            {% elif country == 'AF' %}🇦🇫
+                            {% elif country == 'IQ' %}🇮🇶
+                            {% elif country == 'LY' %}🇱🇾
+                            {% elif country == 'BY' %}🇧🇾
+                            {% elif country == 'MM' %}🇲🇲
+                            {% elif country == 'SD' %}🇸🇩
+                            {% elif country == 'SO' %}🇸🇴
+                            {% elif country == 'YE' %}🇾🇪
+                            {% else %}🌍
+                            {% endif %}
+                            <span class="country-name">{{ country }}</span>
+                        </div>
+                        <a href="/admin/remove_blocked_country/{{ country }}" class="remove-btn" onclick="return confirm('Remove {{ country }} from blocked list?')">Remove</a>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-message">
+                    ✅ No countries are currently blocked
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="card">
+            <h2>ℹ️ About Country Blocking</h2>
+            <div class="info-text">
+                <strong>How it works:</strong><br>
+                When a user visits the platform, their IP address is checked against a GEOIP database.
+                If their country code matches any in the blocked list, access is denied.
+                <br><br>
+                <strong>Note:</strong> Local IPs (127.0.0.1, 192.168.x.x, 10.x.x.x) are never blocked.
+            </div>
+        </div>
+    </div>
+</body>
+</html>

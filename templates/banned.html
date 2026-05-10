@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Access Denied</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0505 100%);
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .ban-card {
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(12px);
+            padding: 50px;
+            border-radius: 48px;
+            border: 2px solid #ff3333;
+            box-shadow: 0 25px 50px rgba(255,0,0,0.2);
+            width: 100%;
+            max-width: 550px;
+            text-align: center;
+        }
+        .lock-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+        h1 {
+            font-size: 2.5rem;
+            color: #ff3333;
+            margin-bottom: 15px;
+        }
+        .message {
+            font-size: 1.2rem;
+            color: #ffaa66;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #2a0a0a;
+            border-radius: 20px;
+        }
+        .info {
+            color: #aaa;
+            font-size: 0.9rem;
+            margin: 20px 0;
+            text-align: left;
+            background: #1a1a1a;
+            padding: 15px;
+            border-radius: 15px;
+        }
+        .timer {
+            color: #ffaa33;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .footer {
+            color: #666;
+            font-size: 0.8rem;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="ban-card">
+        <div class="lock-icon">🔒🚫</div>
+        <h1>Access Denied</h1>
+        <div class="message">
+            ⚠️ You have been banned from accessing this website ⚠️
+        </div>
+        <div class="info">
+            <strong>📌 Ban Details:</strong><br><br>
+            • Your IP address: <code>{{ ip }}</code><br>
+            • Ban duration: <strong>{{ ban_duration }} hours</strong><br>
+            • Reason: <strong>{{ reason }}</strong><br><br>
+            This ban was automatically issued by our security system due to:
+            <ul style="margin-top: 10px; margin-left: 20px;">
+                <li>Excessive requests (DDoS protection)</li>
+                <li>Suspicious activity detection</li>
+                <li>Rate limit violation</li>
+            </ul>
+        </div>
+        <div class="timer">
+            ⏰ Your ban will expire automatically after {{ ban_duration }} hours
+        </div>
+        <div class="footer">
+            Host X Server Security System<br>
+            If you believe this is a mistake, please contact the administrator.
+        </div>
+    </div>
+</body>
+</html>

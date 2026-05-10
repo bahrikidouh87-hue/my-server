@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Security Monitor - X Host Server</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #0a0c10;
+            font-family: 'Inter', sans-serif;
+            padding: 20px;
+            color: #e0e0e0;
+        }
+        .container { max-width: 1400px; margin: 0 auto; }
+        h1 { color: #00ff88; margin-bottom: 20px; }
+        h2 { color: #ffaa66; margin: 25px 0 15px; border-bottom: 1px solid #1a1d27; padding-bottom: 8px; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px; }
+        .back-btn { background: #1a1d27; color: #00ff88; padding: 8px 16px; border-radius: 8px; text-decoration: none; }
+        .back-btn:hover { background: #00ff88; color: #0a0c10; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .stat-card { background: #11141c; border-radius: 16px; padding: 20px; border: 1px solid #1a1d27; text-align: center; }
+        .stat-number { font-size: 2rem; font-weight: bold; color: #00ff88; }
+        .stat-label { color: #8b9bb0; font-size: 0.7rem; margin-top: 5px; text-transform: uppercase; }
+        .card { background: #11141c; border-radius: 16px; padding: 20px; margin-bottom: 25px; border: 1px solid #1a1d27; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #1a1d27; }
+        th { color: #00ff88; font-size: 0.75rem; text-transform: uppercase; }
+        tr:hover { background: #1a1d27; }
+        .badge { padding: 4px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 600; display: inline-block; }
+        .badge-high { background: rgba(239,68,68,0.2); color: #ef4444; border: 1px solid #ef4444; }
+        .badge-medium { background: rgba(245,158,11,0.2); color: #f59e0b; border: 1px solid #f59e0b; }
+        .badge-low { background: rgba(0,255,136,0.2); color: #00ff88; border: 1px solid #00ff88; }
+        .ban-btn { background: rgba(239,68,68,0.2); color: #ef4444; padding: 4px 12px; border-radius: 15px; text-decoration: none; font-size: 0.7rem; }
+        .ban-btn:hover { background: #ef4444; color: white; }
+        .ip-text { font-family: monospace; color: #00ff88; }
+        .clear-btn { background: #1a1d27; color: #8b9bb0; padding: 6px 14px; border-radius: 8px; text-decoration: none; font-size: 0.7rem; float: right; }
+        .clear-btn:hover { background: #ef4444; color: white; }
+        @media (max-width: 768px) { body { padding: 10px; } th, td { padding: 8px; font-size: 0.7rem; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🛡️ Security Monitor</h1>
+            <a href="/admin" class="back-btn">← Back to Admin</a>
+        </div>
+        
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">{{ users_data|length }}</div>
+                <div class="stat-label">Users Tracked</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ security_events|length }}</div>
+                <div class="stat-label">Security Events</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ suspicious_ips|length }}</div>
+                <div class="stat-label">Suspicious IPs</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ banned_ips|length }}</div>
+                <div class="stat-label">Banned IPs</div>
+            </div>
+        </div>
+        
+        <!-- Suspicious IPs -->
+        <div class="card">
+            <h2>🚨 Suspicious IPs <span style="font-size:0.7rem; color:#8b9bb0;">(Security Events)</span></h2>
+            <a href="/admin/clear_security_events" class="clear-btn" onclick="return confirm('Clear all security events?')">Clear All</a>
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr><th>IP Address</th><th>Events Count</th><th>Event Types</th><th>Last Seen</th><th>Action</th></tr>
+                    </thead>
+                    <tbody>
+                        {% for ip in suspicious_ips %}
+                        <tr>
+                            <td class="ip-text">{{ ip.ip }}</td>
+                            <td>{{ ip.count }}</td>
+                            <td>{{ ip.events }}</td>
+                            <td>{{ ip.last_seen[:19] }}</td>
+                            <td><a href="/admin/ban_ip_from_security/{{ ip.ip }}" class="ban-btn" onclick="return confirm('Ban this IP?')">Ban IP</a></td>
+                        </tr>
+                        {% else %}
+                        <tr><td colspan="5" style="text-align:center;">No suspicious IPs found</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Banned IPs -->
+        <div class="card">
+            <h2>🚫 Banned IPs</h2>
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead><tr><th>IP Address</th><th>Ban Until</th><th>Action</th></tr></thead>
+                    <tbody>
+                        {% for ip, until in banned_ips.items() %}
+                        <tr>
+                            <td class="ip-text">{{ ip }}</td>
+                            <td>{{ until[:19] }}</td>
+                            <td><a href="/admin/unban_ip/{{ ip }}" style="color:#00ff88;">Unban</a></td>
+                        </tr>
+                        {% else %}
+                        <tr><td colspan="3" style="text-align:center;">No banned IPs</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Users Database -->
+        <div class="card">
+            <h2>👥 Users Database</h2>
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr><th>Username</th><th>IP Address</th><th>Last Login</th><th>Login Count</th><th>User Agent</th><th>Status</th></tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users_data %}
+                        <tr>
+                            <td><strong>{{ user.username }}</strong></td>
+                            <td class="ip-text">{{ user.ip_address }}</td>
+                            <td>{{ user.last_login[:19] if user.last_login else '-' }}</td>
+                            <td>{{ user.login_count }}</td>
+                            <td style="font-size:0.65rem;">{{ user.user_agent|truncate(40) }}</td>
+                            <td><span class="badge badge-low">{{ user.status }}</span></td>
+                        </tr>
+                        {% else %}
+                        <tr><td colspan="6" style="text-align:center;">No users data found</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Security Events -->
+        <div class="card">
+            <h2>📋 Security Events Log</h2>
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr><th>Time</th><th>Event Type</th><th>IP Address</th><th>Username</th><th>Details</th><th>Severity</th></tr>
+                    </thead>
+                    <tbody>
+                        {% for event in security_events %}
+                        <tr>
+                            <td style="font-size:0.7rem;">{{ event.created_at[:19] }}</td>
+                            <td>{{ event.event_type }}</td>
+                            <td class="ip-text">{{ event.ip_address }}</td>
+                            <td>{{ event.username }}</td>
+                            <td>{{ event.details[:50] }}{% if event.details|length > 50 %}...{% endif %}</td>
+                            <td><span class="badge badge-{{ event.severity }}">{{ event.severity }}</span></td>
+                        </tr>
+                        {% else %}
+                        <tr><td colspan="6" style="text-align:center;">No security events recorded</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- User Activity -->
+        <div class="card">
+            <h2>📊 User Activity Log</h2>
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr><th>Time</th><th>Username</th><th>Action</th><th>Server ID</th><th>IP Address</th></tr>
+                    </thead>
+                    <tbody>
+                        {% for activity in user_activity %}
+                        <tr>
+                            <td style="font-size:0.7rem;">{{ activity.created_at[:19] }}</td>
+                            <td>{{ activity.username }}</td>
+                            <td>{{ activity.action }}</td>
+                            <td>{{ activity.server_id[:8] if activity.server_id else '-' }}</td>
+                            <td class="ip-text">{{ activity.ip_address }}</td>
+                        </tr>
+                        {% else %}
+                        <tr><td colspan="5" style="text-align:center;">No user activity recorded</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
