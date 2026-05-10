@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard - X Host Server</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0c10;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated Gradient Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background: radial-gradient(ellipse at 20% 30%, rgba(0,255,136,0.08), transparent 50%),
+                        radial-gradient(ellipse at 80% 70%, rgba(45,156,219,0.05), transparent 50%);
+            animation: bgPulse 8s ease-in-out infinite;
+        }
+
+        @keyframes bgPulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* Floating Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(0,255,136,0.3);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Waves */
+        .waves {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(0,255,136,0.04)" fill-opacity="1" d="M0,192L48,197.3C96,203,192,213,288,208C384,203,480,181,576,186.7C672,192,768,224,864,234.7C960,245,1056,235,1152,213.3C1248,192,1344,160,1392,144L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') repeat-x;
+            background-size: 1440px 100px;
+            animation: waveMove 12s linear infinite;
+        }
+
+        .wave:nth-child(2) {
+            bottom: 20px;
+            opacity: 0.5;
+            animation: waveMove 18s linear infinite reverse;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(45,156,219,0.05)" fill-opacity="1" d="M0,192L48,197.3C96,203,192,213,288,208C384,203,480,181,576,186.7C672,192,768,224,864,234.7C960,245,1056,235,1152,213.3C1248,192,1344,160,1392,144L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') repeat-x;
+            background-size: 1440px 100px;
+        }
+
+        .wave:nth-child(3) {
+            bottom: 40px;
+            opacity: 0.3;
+            animation: waveMove 25s linear infinite;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(255,170,51,0.03)" fill-opacity="1" d="M0,256L48,250.7C96,245,192,235,288,234.7C384,235,480,245,576,250.7C672,256,768,256,864,245.3C960,235,1056,213,1152,202.7C1248,192,1344,192,1392,192L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') repeat-x;
+            background-size: 1440px 100px;
+        }
+
+        @keyframes waveMove {
+            0% { background-position-x: 0px; }
+            100% { background-position-x: 1440px; }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 90px 24px 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Glass Navbar */
+        .navbar {
+            background: rgba(10,12,16,0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0,255,136,0.2);
+            padding: 12px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .navbar-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #00ff88, #00cc66);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            animation: logoGlow 2s infinite;
+        }
+
+        @keyframes logoGlow {
+            0%, 100% { box-shadow: 0 0 5px rgba(0,255,136,0.3); }
+            50% { box-shadow: 0 0 20px rgba(0,255,136,0.5); }
+        }
+
+        .logo-text {
+            font-size: 1.3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff, #00ff88);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 1px;
+        }
+
+        .logo-badge {
+            font-size: 0.6rem;
+            background: rgba(0,255,136,0.2);
+            padding: 2px 8px;
+            border-radius: 20px;
+            color: #00ff88;
+            margin-left: 8px;
+        }
+
+        .navbar-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .nav-btn {
+            background: rgba(0,255,136,0.1);
+            border: 1px solid rgba(0,255,136,0.3);
+            padding: 8px 20px;
+            border-radius: 40px;
+            color: #00ff88;
+            text-decoration: none;
+            font-size: 0.75rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-btn:hover {
+            background: #00ff88;
+            border-color: #00ff88;
+            color: #0a0c10;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0,255,136,0.3);
+        }
+
+        /* Hero Section Premium */
+        .hero {
+            background: linear-gradient(135deg, rgba(0,255,136,0.08), rgba(45,156,219,0.04));
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(0,255,136,0.15);
+            border-radius: 40px;
+            padding: 45px 50px;
+            margin-bottom: 45px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            animation: fadeUp 0.6s ease;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0,255,136,0.05), transparent);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .hero h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff, #00ff88, #2d9cdb);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        .hero p {
+            color: #9ca3af;
+            font-size: 0.9rem;
+            position: relative;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 25px;
+            position: relative;
+        }
+
+        .hero-stat {
+            text-align: center;
+        }
+
+        .hero-stat-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #00ff88;
+        }
+
+        .hero-stat-label {
+            font-size: 0.7rem;
+            color: #6c6f78;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Create Card Premium */
+        .create-card {
+            background: linear-gradient(135deg, rgba(22,27,34,0.9), rgba(22,27,34,0.7));
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(0,255,136,0.12);
+            border-radius: 32px;
+            padding: 35px;
+            margin-bottom: 45px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: fadeUp 0.7s ease;
+        }
+
+        .create-card:hover {
+            border-color: rgba(0,255,136,0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 25px 45px rgba(0,0,0,0.3);
+        }
+
+        .create-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .create-header .icon {
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(135deg, #00ff88, #00cc66);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .create-header h2 {
+            color: #e0e0e0;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .create-header p {
+            color: #8b9bb0;
+            font-size: 0.75rem;
+            margin-top: 4px;
+        }
+
+        .create-form {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .create-form input {
+            background: rgba(10,12,16,0.9);
+            border: 1px solid rgba(0,255,136,0.2);
+            border-radius: 20px;
+            padding: 16px 24px;
+            width: 400px;
+            color: white;
+            font-size: 0.9rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .create-form input:focus {
+            border-color: #00ff88;
+            box-shadow: 0 0 25px rgba(0,255,136,0.15);
+            transform: scale(1.01);
+        }
+
+        .create-form input::placeholder {
+            color: #6c6f78;
+        }
+
+        .create-form button {
+            background: linear-gradient(135deg, #00ff88, #00cc66);
+            border: none;
+            border-radius: 20px;
+            padding: 16px 40px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #0a0c10;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .create-form button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0,255,136,0.4);
+        }
+
+        /* Servers Header */
+        .servers-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .servers-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .servers-title .icon {
+            font-size: 1.8rem;
+        }
+
+        .servers-title h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #e0e0e0;
+        }
+
+        .servers-count {
+            background: linear-gradient(135deg, #00ff88, #00cc66);
+            padding: 5px 18px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            color: #0a0c10;
+        }
+
+        .refresh-btn {
+            background: rgba(0,255,136,0.1);
+            border: 1px solid rgba(0,255,136,0.3);
+            border-radius: 40px;
+            padding: 8px 20px;
+            color: #00ff88;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .refresh-btn:hover {
+            background: rgba(0,255,136,0.2);
+            transform: rotate(180deg);
+        }
+
+        /* Servers Grid */
+        .servers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 28px;
+        }
+
+        /* Server Card Premium */
+        .server-card {
+            background: linear-gradient(135deg, rgba(22,27,34,0.95), rgba(22,27,34,0.8));
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(0,255,136,0.1);
+            border-radius: 28px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: fadeUp 0.5s ease forwards;
+            opacity: 0;
+            animation-delay: calc(var(--delay, 0) * 0.08s);
+        }
+
+        .server-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: rgba(0,255,136,0.4);
+            box-shadow: 0 30px 50px rgba(0,0,0,0.4);
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .server-header {
+            background: linear-gradient(135deg, rgba(0,255,136,0.08), rgba(0,255,136,0.02));
+            padding: 22px 24px;
+            border-bottom: 1px solid rgba(0,255,136,0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .server-name {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .server-name .icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(0,255,136,0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .server-name h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #00ff88;
+        }
+
+        .server-status {
+            font-size: 0.65rem;
+            padding: 5px 14px;
+            border-radius: 50px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-running {
+            background: rgba(0,255,136,0.15);
+            color: #00ff88;
+            border: 1px solid rgba(0,255,136,0.3);
+            animation: statusPulse 1.5s infinite;
+        }
+
+        .status-stopped {
+            background: rgba(239,68,68,0.15);
+            color: #ef4444;
+            border: 1px solid rgba(239,68,68,0.3);
+        }
+
+        @keyframes statusPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .server-details {
+            padding: 20px 24px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px dashed rgba(0,255,136,0.05);
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #8b9bb0;
+            font-size: 0.75rem;
+        }
+
+        .detail-value {
+            color: #e0e0e0;
+            font-size: 0.85rem;
+            font-weight: 600;
+            font-family: monospace;
+        }
+
+        .detail-value.highlight {
+            color: #00ff88;
+        }
+
+        /* Storage Progress */
+        .storage-section {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(0,255,136,0.08);
+        }
+
+        .storage-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.65rem;
+            color: #8b9bb0;
+            margin-bottom: 8px;
+        }
+
+        .storage-bar {
+            height: 6px;
+            background: #1e2a3a;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .storage-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff88, #2d9cdb);
+            border-radius: 6px;
+            transition: width 0.5s ease;
+        }
+
+        /* Server Actions */
+        .server-actions {
+            padding: 18px 24px 24px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .terminal-btn {
+            flex: 2;
+            background: linear-gradient(135deg, #00ff88, #00cc66);
+            border: none;
+            border-radius: 16px;
+            padding: 12px;
+            color: #0a0c10;
+            text-decoration: none;
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 800;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .terminal-btn:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 25px rgba(0,255,136,0.4);
+        }
+
+        .delete-btn {
+            flex: 1;
+            background: rgba(239,68,68,0.1);
+            border: 1px solid rgba(239,68,68,0.3);
+            border-radius: 16px;
+            padding: 12px;
+            color: #ef4444;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .delete-btn:hover {
+            background: #ef4444;
+            color: white;
+            transform: scale(1.03);
+            box-shadow: 0 8px 25px rgba(239,68,68,0.3);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 80px 40px;
+            background: linear-gradient(135deg, rgba(22,27,34,0.6), rgba(22,27,34,0.4));
+            border-radius: 40px;
+            border: 1px solid rgba(0,255,136,0.08);
+            transition: all 0.3s ease;
+        }
+
+        .empty-state:hover {
+            border-color: rgba(0,255,136,0.2);
+        }
+
+        .empty-icon {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            opacity: 0.4;
+            animation: floatIcon 3s ease-in-out infinite;
+        }
+
+        @keyframes floatIcon {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .empty-state h3 {
+            color: #e0e0e0;
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .empty-state p {
+            color: #8b9bb0;
+            font-size: 0.85rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: transparent;
+            border-top: 1px solid rgba(0,255,136,0.08);
+            padding: 30px;
+            text-align: center;
+            color: #6c6f78;
+            font-size: 0.7rem;
+            margin-top: 50px;
+        }
+
+        .footer a {
+            color: #00ff88;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 15px;
+        }
+
+        /* Modal Premium */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.show {
+            display: flex;
+            animation: fadeUp 0.3s ease;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #161b22, #11141c);
+            border-radius: 32px;
+            padding: 35px;
+            width: 90%;
+            max-width: 420px;
+            text-align: center;
+            border: 1px solid rgba(239,68,68,0.5);
+            animation: fadeUp 0.3s ease;
+        }
+
+        .modal-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .modal-content h3 {
+            color: #ef4444;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .modal-content p {
+            color: #8b9bb0;
+            margin-bottom: 10px;
+        }
+
+        .modal-warning {
+            color: #ef4444;
+            font-size: 0.7rem;
+            margin-bottom: 25px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .modal-btn {
+            padding: 12px 28px;
+            border-radius: 40px;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            font-size: 0.8rem;
+        }
+
+        .modal-confirm {
+            background: #ef4444;
+            color: white;
+        }
+
+        .modal-confirm:hover {
+            background: #dc2626;
+            transform: scale(1.02);
+            box-shadow: 0 5px 20px rgba(239,68,68,0.4);
+        }
+
+        .modal-cancel {
+            background: #2a2d3a;
+            color: white;
+        }
+
+        .modal-cancel:hover {
+            background: #3a3d4a;
+            transform: scale(1.02);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a1d27;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #00ff88, #2d9cdb);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #2d9cdb, #00ff88);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 80px 16px 30px;
+            }
+            .servers-grid {
+                grid-template-columns: 1fr;
+            }
+            .create-form {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .create-form input {
+                width: 100%;
+            }
+            .hero h1 {
+                font-size: 1.5rem;
+            }
+            .hero-stats {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .navbar {
+                padding: 10px 20px;
+            }
+            .logo-text {
+                font-size: 1rem;
+            }
+            .servers-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg"></div>
+    
+    <!-- Floating Particles -->
+    <div class="particles" id="particles"></div>
+    
+    <!-- Waves -->
+    <div class="waves">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+    </div>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="navbar-left">
+            <div class="logo">
+                <div class="logo-icon">⚡</div>
+                <div class="logo-text">X HOST<span class="logo-badge">CLOUD</span></div>
+            </div>
+        </div>
+        <div class="navbar-actions">
+            <a href="/logout" class="nav-btn">
+                <span>🚪</span> Logout
+            </a>
+        </div>
+    </div>
+    
+    <div class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1>✨ Welcome back, {{ user }}! 👋</h1>
+            <p>Deploy, manage and scale your cloud infrastructure in seconds</p>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="hero-stat-value">{{ servers_count }}</div>
+                    <div class="hero-stat-label">Active Servers</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-value">{{ user_servers|length }}</div>
+                    <div class="hero-stat-label">Deployments</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-value">99.9%</div>
+                    <div class="hero-stat-label">Uptime</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Create Server Card -->
+        <div class="create-card">
+            <div class="create-header">
+                <div class="icon">🚀</div>
+                <div>
+                    <h2>Create New Server</h2>
+                    <p>Launch a new cloud instance with one click</p>
+                </div>
+            </div>
+            <form class="create-form" method="POST" action="/create_server">
+                <input type="text" name="server_name" placeholder="Enter server name..." required>
+                <button type="submit">
+                    <span>✨</span> Create Server
+                </button>
+            </form>
+        </div>
+        
+        <!-- Servers Section -->
+        <div class="servers-header">
+            <div class="servers-title">
+                <div class="icon">📁</div>
+                <h2>My Servers</h2>
+                <div class="servers-count">{{ servers_count }}</div>
+            </div>
+            <button class="refresh-btn" onclick="location.reload()">
+                <span>⟳</span> Refresh
+            </button>
+        </div>
+        
+        <div class="servers-grid">
+            {% for sid, server in user_servers.items() %}
+            <div class="server-card" style="--delay: {{ loop.index }}">
+                <div class="server-header">
+                    <div class="server-name">
+                        <div class="icon">🖥️</div>
+                        <h3>{{ server.name }}</h3>
+                    </div>
+                    <div class="server-status status-{{ server.status }}">
+                        {{ server.status.upper() }}
+                    </div>
+                </div>
+                <div class="server-details">
+                    <div class="detail-row">
+                        <div class="detail-label">🔧 CPU Type</div>
+                        <div class="detail-value highlight">{{ server.cpu_type }}</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">⚡ CPU Speed</div>
+                        <div class="detail-value">{{ server.cpu_speed }} GHz</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">🧠 RAM</div>
+                        <div class="detail-value">{{ server.ram }}</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">💾 Storage</div>
+                        <div class="detail-value">{{ server.storage }}</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">⚙️ Cores</div>
+                        <div class="detail-value">{{ server.cores }} Cores</div>
+                    </div>
+                    <div class="storage-section">
+                        <div class="storage-info">
+                            <span>📀 Storage Used</span>
+                            <span>{{ server.storage_used|default('0 MB') }}/{{ server.storage }}</span>
+                        </div>
+                        <div class="storage-bar">
+                            <div class="storage-fill" style="width: {{ server.storage_percent|default(0) }}%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="server-actions">
+                    <a href="/terminal/{{ sid }}" class="terminal-btn">
+                        <span>▶</span> Open Terminal
+                    </a>
+                    <button class="delete-btn" onclick="showDeleteModal('{{ sid }}', '{{ server.name }}')">
+                        <span>🗑</span> Delete
+                    </button>
+                </div>
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <div class="empty-icon">📭</div>
+                <h3>No Servers Yet</h3>
+                <p>Create your first server using the form above</p>
+                <p style="margin-top: 15px; font-size: 0.7rem;">✨ Get started in seconds</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>© 2025 X HOST SERVER — Enterprise Cloud Platform</p>
+        <div class="footer-links">
+            <a href="#">Terms of Service</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Documentation</a>
+            <a href="#">Support</a>
+        </div>
+    </div>
+    
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-icon">⚠️</div>
+            <h3>Delete Server</h3>
+            <p id="deleteMessage">Are you sure you want to delete this server?</p>
+            <p class="modal-warning">All data will be permanently lost!</p>
+            <div class="modal-buttons">
+                <button class="modal-btn modal-cancel" onclick="closeDeleteModal()">Cancel</button>
+                <button class="modal-btn modal-confirm" onclick="confirmDelete()">Delete</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Generate floating particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                const size = Math.random() * 4 + 2;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                particle.style.opacity = Math.random() * 0.5 + 0.1;
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        createParticles();
+        
+        let deleteServerId = null;
+        let deleteServerName = null;
+        
+        function showDeleteModal(serverId, serverName) {
+            deleteServerId = serverId;
+            deleteServerName = serverName;
+            document.getElementById('deleteMessage').innerHTML = `Are you sure you want to delete "<strong style="color:#00ff88">${serverName}</strong>"?`;
+            document.getElementById('deleteModal').classList.add('show');
+        }
+        
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').classList.remove('show');
+            deleteServerId = null;
+            deleteServerName = null;
+        }
+        
+        function confirmDelete() {
+            if(deleteServerId) {
+                fetch(`/api/delete_server/${deleteServerId}`, {method: 'DELETE'})
+                    .then(res => res.json())
+                    .then(data => {
+                        if(data.success) {
+                            alert('✅ Server deleted successfully');
+                            location.reload();
+                        } else {
+                            alert('❌ Failed to delete server');
+                        }
+                    })
+                    .catch(err => alert('❌ Error deleting server'))
+                    .finally(() => closeDeleteModal());
+            }
+        }
+        
+        // Close modal on outside click
+        window.onclick = function(event) {
+            const modal = document.getElementById('deleteModal');
+            if (event.target === modal) {
+                closeDeleteModal();
+            }
+        }
+        
+        // Add animation to cards on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.server-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'all 0.5s ease';
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>

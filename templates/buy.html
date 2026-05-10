@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Buy Server - Host X</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: linear-gradient(135deg, #0a1628 0%, #0d1f3c 50%, #0a1628 100%);
+            font-family: 'Segoe UI', 'Poppins', system-ui;
+            min-height: 100vh;
+            padding: 30px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(13,31,60,0.8);
+            backdrop-filter: blur(10px);
+            padding: 18px 30px;
+            border-radius: 60px;
+            margin-bottom: 35px;
+            border: 1px solid rgba(79,195,247,0.2);
+        }
+        .header h1 {
+            color: #4fc3f7;
+        }
+        .back-btn {
+            color: #4fc3f7;
+            text-decoration: none;
+            background: rgba(79,195,247,0.1);
+            padding: 8px 24px;
+            border-radius: 40px;
+            transition: 0.3s;
+        }
+        .back-btn:hover {
+            background: #4fc3f7;
+            color: #0a1628;
+        }
+        .packages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+        .package-card {
+            background: linear-gradient(135deg, rgba(13,31,60,0.95), rgba(10,22,40,0.98));
+            backdrop-filter: blur(10px);
+            border-radius: 28px;
+            padding: 30px;
+            border: 1px solid rgba(79,195,247,0.2);
+            transition: 0.3s;
+            text-align: center;
+        }
+        .package-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(79,195,247,0.5);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        .package-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+        .package-name {
+            color: #4fc3f7;
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .package-specs {
+            text-align: left;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 20px;
+        }
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(79,195,247,0.1);
+        }
+        .spec-label {
+            color: #88b4df;
+        }
+        .spec-value {
+            color: #00ffaa;
+            font-weight: bold;
+        }
+        .price {
+            font-size: 2rem;
+            color: #ffaa33;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .buy-btn {
+            background: linear-gradient(135deg, #25d366, #128c7e);
+            border: none;
+            padding: 14px 35px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            color: white;
+            transition: 0.3s;
+            width: 100%;
+        }
+        .buy-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(37,211,102,0.4);
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #88b4df;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🛒 Buy Server Package</h1>
+            <a href="/dashboard" class="back-btn">← Back to Dashboard</a>
+        </div>
+        
+        <div class="packages-grid">
+            {% for pid, pkg in packages.items() %}
+            <div class="package-card">
+                <div class="package-icon">
+                    {% if pid == 'package_1' %}🚀
+                    {% elif pid == 'package_2' %}💻
+                    {% else %}🖥️
+                    {% endif %}
+                </div>
+                <div class="package-name">{{ pkg.name }}</div>
+                <div class="package-specs">
+                    <div class="spec-item">
+                        <span class="spec-label">🖥️ CPU</span>
+                        <span class="spec-value">{{ pkg.cpu }}</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">🧠 RAM</span>
+                        <span class="spec-value">{{ pkg.ram }}</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">💾 Storage</span>
+                        <span class="spec-value">{{ pkg.storage }}</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">⚡ Cores</span>
+                        <span class="spec-value">{{ pkg.cores }} Cores</span>
+                    </div>
+                </div>
+                <div class="price">{{ pkg.price }}</div>
+                <a href="/purchase/{{ pid }}" class="buy-btn">💬 Buy Now via WhatsApp</a>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="footer">
+            <p>📞 Contact us on WhatsApp for any questions: +541700591</p>
+            <p style="font-size: 0.8rem; margin-top: 10px;">After payment, admin will activate your server within 24 hours</p>
+        </div>
+    </div>
+</body>
+</html>

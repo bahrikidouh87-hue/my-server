@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign in - Host X Server</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* فيديو الخلفية */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+        }
+
+        /* طبقة شفافة فوق الفيديو */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: -1;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Courier New', 'Segoe UI', monospace;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .card {
+            background: rgba(20, 25, 45, 0.92);
+            backdrop-filter: blur(12px);
+            padding: 2.5rem;
+            width: 450px;
+            border-radius: 28px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 0 1px rgba(100,150,255,0.2);
+            text-align: left;
+            border: 1px solid rgba(100,150,255,0.3);
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+            border-color: rgba(100,150,255,0.5);
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 1.8rem;
+            text-align: center;
+            letter-spacing: 2px;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(100,150,255,0.5);
+            font-weight: 700;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 15px;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            color: #aaccee;
+            text-transform: uppercase;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            margin: 6px 0 14px;
+            border: 1px solid #334455;
+            background: rgba(0,0,0,0.6);
+            font-family: monospace;
+            font-size: 0.95rem;
+            border-radius: 14px;
+            color: #ffffff;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #5a9eff;
+            box-shadow: 0 0 10px rgba(90,158,255,0.3);
+        }
+
+        input::placeholder {
+            color: #6688aa;
+        }
+
+        .captcha-container {
+            margin: 15px 0 10px;
+        }
+
+        /* حاوية الكود + زر التحديث جنباً لجنب */
+        .code-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 10px 0;
+        }
+
+        .code-area {
+            flex: 1;
+            background: linear-gradient(135deg, rgba(0,0,0,0.7), rgba(20,30,60,0.8));
+            border: 2px solid;
+            border-image: linear-gradient(45deg, #ffaa44, #5a9eff, #ff44aa) 1;
+            text-align: center;
+            padding: 16px;
+            border-radius: 18px;
+            box-shadow: 0 0 20px rgba(90,158,255,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .code-text {
+            font-size: 2rem;
+            letter-spacing: 10px;
+            font-weight: bold;
+            font-family: monospace;
+            background: linear-gradient(135deg, #ffaa44, #88ffdd, #5a9eff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: none;
+            animation: pulseGlow 1.2s ease-in-out infinite;
+            display: inline-block;
+        }
+
+        @keyframes pulseGlow {
+            0% {
+                text-shadow: 0 0 5px #ffaa44, 0 0 10px #ffaa44;
+                opacity: 0.9;
+            }
+            50% {
+                text-shadow: 0 0 20px #ffaa44, 0 0 30px #5a9eff;
+                opacity: 1;
+            }
+            100% {
+                text-shadow: 0 0 5px #ffaa44, 0 0 10px #ffaa44;
+                opacity: 0.9;
+            }
+        }
+
+        .code-area::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ffaa44, #5a9eff, #ff44aa, #ffaa44);
+            border-radius: 18px;
+            z-index: -1;
+            animation: borderRotate 3s linear infinite;
+            opacity: 0.7;
+        }
+
+        @keyframes borderRotate {
+            0% {
+                filter: blur(3px);
+                transform: rotate(0deg);
+            }
+            100% {
+                filter: blur(3px);
+                transform: rotate(360deg);
+            }
+        }
+
+        /* زر التحديث بتأثير حقيقي */
+        .refresh-icon {
+            background: linear-gradient(145deg, #2a3a5a, #1a2a4a);
+            color: #ffaa44;
+            border: none;
+            width: 56px;
+            height: 56px;
+            font-size: 1.8rem;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 20px;
+            transition: all 0.05s linear;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 5px 5px 12px rgba(0,0,0,0.5), -2px -2px 5px rgba(255,255,255,0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* تأثير الضغط (يتم تطبيقه عبر JS) */
+        .refresh-icon:active {
+            transform: scale(0.92) !important;
+            box-shadow: inset 3px 3px 8px rgba(0,0,0,0.6), inset -1px -1px 3px rgba(255,255,255,0.05) !important;
+            background: linear-gradient(145deg, #1a2a4a, #0f1a30) !important;
+        }
+
+        .refresh-icon:hover {
+            background: linear-gradient(145deg, #3a4a6a, #2a3a5a);
+            transform: scale(1.02);
+            box-shadow: 6px 6px 14px rgba(0,0,0,0.6), -2px -2px 6px rgba(255,255,255,0.08);
+            color: #ffffff;
+        }
+
+        /* تأثير دوران للرمز أثناء التحديث */
+        .refresh-icon.spinning {
+            animation: spinForward 0.4s cubic-bezier(0.4, 2.0, 0.6, 1.0) forwards;
+        }
+        
+        @keyframes spinForward {
+            0% { transform: rotate(0deg) scale(1); }
+            100% { transform: rotate(360deg) scale(1.1); }
+        }
+
+        .code-text.refreshing {
+            animation: shake 0.3s ease, pulseGlow 0.8s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); letter-spacing: 10px; }
+            25% { transform: translateX(-5px); letter-spacing: 6px; }
+            75% { transform: translateX(5px); letter-spacing: 14px; }
+        }
+
+        .signin-btn {
+            background: linear-gradient(135deg, #2a5a9a, #1a3a6a);
+            color: white;
+            border: none;
+            padding: 14px;
+            width: 100%;
+            font-size: 1.1rem;
+            cursor: pointer;
+            margin-top: 15px;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: 0.3s;
+            letter-spacing: 2px;
+        }
+
+        .signin-btn:hover {
+            background: linear-gradient(135deg, #3a6aaa, #2a4a7a);
+            transform: scale(1.01);
+            box-shadow: 0 0 15px rgba(42,90,154,0.5);
+        }
+
+        /* BUY TO MICHEL CRACK - تحت الزر */
+        .crack-section {
+            text-align: center;
+            margin-top: 25px;
+            padding: 16px;
+            background: rgba(0,0,0,0.4);
+            border-radius: 20px;
+            border: 1px solid rgba(255,140,0,0.3);
+            transition: 0.3s;
+        }
+
+        .crack-section:hover {
+            border-color: rgba(255,140,0,0.6);
+            background: rgba(0,0,0,0.5);
+        }
+
+        .crack-title {
+            color: #ffaa44;
+            font-size: 1rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .crack-telegram {
+            color: #88aaff;
+            font-size: 0.85rem;
+            margin-top: 8px;
+        }
+
+        .crack-telegram a {
+            color: #88aaff;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .crack-telegram a:hover {
+            color: #ffaa44;
+            text-shadow: 0 0 3px #ffaa44;
+        }
+
+        .footer {
+            font-size: 0.65rem;
+            color: #7788aa;
+            text-align: center;
+            margin-top: 22px;
+            border-top: 1px solid rgba(100,150,255,0.2);
+            padding-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <video class="video-background" autoplay muted loop playsinline>
+        <source src="{{ url_for('static', filename='anim.mp4') }}" type="video/mp4">
+        Your browser does not support Robot 🤖.
+    </video>
+    <div class="overlay"></div>
+
+    <div class="card">
+        <h2>SIGN IN TO ACCOUNT</h2>
+
+        <form method="POST" action="/login">
+            <label>USERNAME</label>
+            <input type="text" name="username" placeholder="Enter username" autocomplete="off" required>
+
+            <label>PASSWORD</label>
+            <input type="password" name="password" placeholder="Enter password" required>
+
+            <div class="captcha-container">
+                <label>SECURITY VERIFICATION</label>
+                
+                <div class="code-wrapper">
+                    <div class="code-area">
+                        <div class="code-text" id="securityCode">{{ captcha }}</div>
+                    </div>
+                    <button type="button" class="refresh-icon" id="refreshCodeBtn">⟳</button>
+                </div>
+                
+                <input type="text" name="captcha" id="codeInput" placeholder="ENTER THE CODE ABOVE" required>
+            </div>
+
+            <button type="submit" class="signin-btn">SIGN IN</button>
+        </form>
+
+        <div class="crack-section">
+            <div class="crack-title">💰 BUY TO TELEGRAM 💰</div>
+            <div class="crack-telegram">
+                📱 Telegram: <a href="https://t.me/UD_RX" target="_blank">@UD_RX</a>
+            </div>
+        </div>
+
+        <div class="footer">
+            <span>Host X Server</span><br>
+            Secure Cloud Hosting Platform
+        </div>
+    </div>
+
+    <script>
+        function refreshCaptcha() {
+            const codeElement = document.getElementById('securityCode');
+            const refreshBtn = document.getElementById('refreshCodeBtn');
+            
+            // 1. إضافة تأثير النقر الحقيقي (يتم تشغيله يدوياً لأن :active يختفي بسرعة)
+            refreshBtn.style.transform = 'scale(0.92)';
+            refreshBtn.style.boxShadow = 'inset 3px 3px 8px rgba(0,0,0,0.6), inset -1px -1px 3px rgba(255,255,255,0.05)';
+            refreshBtn.style.background = 'linear-gradient(145deg, #1a2a4a, #0f1a30)';
+            
+            // 2. إضافة تأثير الدوران للرمز
+            refreshBtn.classList.add('spinning');
+            
+            // 3. تأثير الاهتزاز للكود
+            codeElement.classList.add('refreshing');
+            
+            // استعادة مظهر الزر بعد 100 مللي (تأثير النقر الحقيقي)
+            setTimeout(() => {
+                refreshBtn.style.transform = '';
+                refreshBtn.style.boxShadow = '';
+                refreshBtn.style.background = '';
+            }, 120);
+            
+            // إزالة تأثير الدوران بعد اكتماله
+            setTimeout(() => {
+                refreshBtn.classList.remove('spinning');
+            }, 400);
+            
+            // جلب كابتشا جديد من السيرفر
+            fetch('/refresh_captcha')
+                .then(res => res.json())
+                .then(data => {
+                    // تغيير النص
+                    codeElement.innerText = data.captcha;
+                    document.getElementById('codeInput').value = '';
+                    
+                    // إعادة تشغيل تأثير النبض
+                    codeElement.style.animation = 'none';
+                    setTimeout(() => {
+                        codeElement.style.animation = 'pulseGlow 1.2s ease-in-out infinite';
+                    }, 50);
+                    
+                    setTimeout(() => {
+                        codeElement.classList.remove('refreshing');
+                    }, 300);
+                })
+                .catch(() => {
+                    location.reload();
+                });
+        }
+
+        document.getElementById('refreshCodeBtn').addEventListener('click', refreshCaptcha);
+    </script>
+</body>
+</html>
