@@ -1,0 +1,32 @@
+{
+    "xza123": {
+        "password": "xza",
+        "role": "admin",
+        "ram": "33 GB",
+        "storage": "258 GB",
+        "cpu": "Admin - Snapdragon",
+        "cores": 8,
+        "expiry": "Unlimited",
+        "created_at": "2026-05-08T00:39:06.402986"
+    },
+    "Houssem": {
+        "password": "Houssem",
+        "role": "user",
+        "cpu": "AMD Ryzen 9 7950X",
+        "ram": "4 GB",
+        "storage": "50 GB",
+        "cores": 2,
+        "expiry": "12/8/2026",
+        "created_at": "2026-05-08T05:28:30.055582"
+    },
+    "3600": {
+        "password": "3600",
+        "role": "user",
+        "cpu": "AMD Ryzen 9 7950X",
+        "ram": "4 GB",
+        "storage": "50 GB",
+        "cores": 2,
+        "expiry": "2026-07-04",
+        "created_at": "2026-05-08T06:03:37.193452"
+    }
+}

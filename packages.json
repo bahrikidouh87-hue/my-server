@@ -1,0 +1,32 @@
+{
+    "package_1": {
+        "id": "package_1",
+        "name": "Ryzen Pro",
+        "ram": "16 GB",
+        "storage": "285 GB",
+        "cpu": "Ryzen 7 3700X",
+        "cores": 2,
+        "price": "$29.99",
+        "whatsapp": "541700591"
+    },
+    "package_2": {
+        "id": "package_2",
+        "name": "Ryzen Standard",
+        "ram": "8 GB",
+        "storage": "128 GB",
+        "cpu": "Ryzen 5 3500X",
+        "cores": 3,
+        "price": "$19.99",
+        "whatsapp": "541700591"
+    },
+    "package_3": {
+        "id": "package_3",
+        "name": "Basic Server",
+        "ram": "4 GB",
+        "storage": "64 GB",
+        "cpu": "Intel Core i3",
+        "cores": 2,
+        "price": "$9.99",
+        "whatsapp": "541700591"
+    }
+}
