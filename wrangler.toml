@@ -1,6 +1,6 @@
-name = "my-server"
-main = "app.py"
+name = "hostx-server"
+pages_build_output_dir = "templates"
 compatibility_date = "2024-01-01"
 
-[build]
-command = "pip install -r requirements.txt -t ."
+[env.production]
+vars = { SECRET_KEY = "host_x_server_super_secret_key_2024" }
