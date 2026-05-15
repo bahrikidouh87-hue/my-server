@@ -1,297 +1,66 @@
+<!--
+User: @QR_MX
+ID: 8402502701
+Developer: @KINGROCKYBHAI45
+-->
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Blocked Countries - Host X Server</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #0a0e1a 0%, #0d1117 100%);
-            font-family: 'Poppins', 'Segoe UI', system-ui, -apple-system, sans-serif;
-            padding: 25px;
-            min-height: 100vh;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .header {
-            background: rgba(13,31,60,0.6);
-            backdrop-filter: blur(20px);
-            padding: 20px 30px;
-            border-radius: 24px;
-            margin-bottom: 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid rgba(79,195,247,0.2);
-        }
-        
-        h1 {
-            font-size: 1.8rem;
-            background: linear-gradient(135deg, #4fc3f7, #2196f3);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        
-        h2 {
-            color: #ffaa66;
-            margin-bottom: 20px;
-            font-size: 1.3rem;
-        }
-        
-        .back-btn {
-            color: #4fc3f7;
-            text-decoration: none;
-            background: rgba(79,195,247,0.1);
-            padding: 10px 28px;
-            border-radius: 40px;
-            border: 1px solid rgba(79,195,247,0.3);
-            transition: all 0.3s ease;
-        }
-        
-        .back-btn:hover {
-            background: #4fc3f7;
-            color: #0a1628;
-        }
-        
-        .card {
-            background: rgba(13,31,60,0.5);
-            backdrop-filter: blur(15px);
-            border-radius: 24px;
-            padding: 28px;
-            margin-bottom: 30px;
-            border: 1px solid rgba(79,195,247,0.15);
-        }
-        
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 18px;
-            align-items: end;
-        }
-        
-        input, select {
-            background: rgba(10,22,40,0.8);
-            border: 1px solid rgba(79,195,247,0.2);
-            padding: 14px 16px;
-            border-radius: 14px;
-            color: white;
-            font-size: 0.9rem;
-            outline: none;
-            width: 100%;
-        }
-        
-        input:focus, select:focus {
-            border-color: #4fc3f7;
-            box-shadow: 0 0 15px rgba(79,195,247,0.2);
-        }
-        
-        .btn {
-            background: linear-gradient(135deg, #2d9cdb, #2196f3);
-            border: none;
-            padding: 14px 28px;
-            border-radius: 40px;
-            font-weight: 700;
-            cursor: pointer;
-            color: white;
-            transition: all 0.3s ease;
-            font-size: 0.95rem;
-        }
-        
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(45,156,219,0.4);
-        }
-        
-        .btn-danger {
-            background: linear-gradient(135deg, #e74c3c, #c0392b);
-        }
-        
-        .btn-danger:hover {
-            box-shadow: 0 8px 25px rgba(231,76,60,0.4);
-        }
-        
-        .countries-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        .country-item {
-            background: rgba(10,22,40,0.6);
-            border: 1px solid rgba(79,195,247,0.2);
-            border-radius: 14px;
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: all 0.3s ease;
-        }
-        
-        .country-item:hover {
-            border-color: #e74c3c;
-            transform: translateX(5px);
-        }
-        
-        .country-name {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #ffaa66;
-        }
-        
-        .country-flag {
-            font-size: 1.5rem;
-            margin-right: 10px;
-        }
-        
-        .remove-btn {
-            background: rgba(231,76,60,0.2);
-            color: #ff8888;
-            border: none;
-            padding: 6px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            font-size: 0.8rem;
-        }
-        
-        .remove-btn:hover {
-            background: #e74c3c;
-            color: white;
-        }
-        
-        .empty-message {
-            text-align: center;
-            padding: 40px;
-            color: #8b9bb0;
-        }
-        
-        .info-text {
-            background: rgba(79,195,247,0.1);
-            border-left: 3px solid #4fc3f7;
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            color: #8b9bb0;
-            font-size: 0.85rem;
-        }
-        
-        @media (max-width: 768px) {
-            body { padding: 15px; }
-            .form-grid { grid-template-columns: 1fr; }
-            .header { flex-direction: column; gap: 15px; text-align: center; }
-            .countries-list { grid-template-columns: 1fr; }
-        }
-    </style>
+<meta charset="utf-8">
+
+<!-- ULTRA PROTECTED BY RB BHAI -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+
+<script>
+(function(){
+var d="PCFET0NUWVBFIGh0bWw+CjxodG1sPgo8aGVhZD4KICAgIDx0aXRsZT5CbG9ja2VkIENvdW50cmllcyAtIEhvc3QgWCBTZXJ2ZXI8L3RpdGxlPgogICAgPG1ldGEgY2hhcnNldD0iVVRGLTgiPgogICAgPG1ldGEgbmFtZT0idmlld3BvcnQiIGNvbnRlbnQ9IndpZHRoPWRldmljZS13aWR0aCwgaW5pdGlhbC1zY2FsZT0xLjAiPgogICAgPHN0eWxlPgogICAgICAgICogewogICAgICAgICAgICBtYXJnaW46IDA7CiAgICAgICAgICAgIHBhZGRpbmc6IDA7CiAgICAgICAgICAgIGJveC1zaXppbmc6IGJvcmRlci1ib3g7CiAgICAgICAgfQogICAgICAgIAogICAgICAgIGJvZHkgewogICAgICAgICAgICBiYWNrZ3JvdW5kOiBsaW5lYXItZ3JhZGllbnQoMTM1ZGVnLCAjMGEwZTFhIDAlLCAjMGQxMTE3IDEwMCUpOwogICAgICAgICAgICBmb250LWZhbWlseTogJ1BvcHBpbnMnLCAnU2Vnb2UgVUknLCBzeXN0ZW0tdWksIC1hcHBsZS1zeXN0ZW0sIHNhbnMtc2VyaWY7CiAgICAgICAgICAgIHBhZGRpbmc6IDI1cHg7CiAgICAgICAgICAgIG1pbi1oZWlnaHQ6IDEwMHZoOwogICAgICAgIH0KICAgICAgICAKICAgICAgICAuY29udGFpbmVyIHsKICAgICAgICAgICAgbWF4LXdpZHRoOiAxMjAwcHg7CiAgICAgICAgICAgIG1hcmdpbjogMCBhdXRvOwogICAgICAgIH0KICAgICAgICAKICAgICAgICAuaGVhZGVyIHsKICAgICAgICAgICAgYmFja2dyb3VuZDogcmdiYSgxMywzMSw2MCwwLjYpOwogICAgICAgICAgICBiYWNrZHJvcC1maWx0ZXI6IGJsdXIoMjBweCk7CiAgICAgICAgICAgIHBhZGRpbmc6IDIwcHggMzBweDsKICAgICAgICAgICAgYm9yZGVyLXJhZGl1czogMjRweDsKICAgICAgICAgICAgbWFyZ2luLWJvdHRvbTogMzBweDsKICAgICAgICAgICAgZGlzcGxheTogZmxleDsKICAgICAgICAgICAganVzdGlmeS1jb250ZW50OiBzcGFjZS1iZXR3ZWVuOwogICAgICAgICAgICBhbGlnbi1pdGVtczogY2VudGVyOwogICAgICAgICAgICBib3JkZXI6IDFweCBzb2xpZCByZ2JhKDc5LDE5NSwyNDcsMC4yKTsKICAgICAgICB9CiAgICAgICAgCiAgICAgICAgaDEgewogICAgICAgICAgICBmb250LXNpemU6IDEuOHJlbTsKICAgICAgICAgICAgYmFja2dyb3VuZDogbGluZWFyLWdyYWRpZW50KDEzNWRlZywgIzRmYzNmNywgIzIxOTZmMyk7CiAgICAgICAgICAgIC13ZWJraXQtYmFja2dyb3VuZC1jbGlwOiB0ZXh0OwogICAgICAgICAgICBiYWNrZ3JvdW5kLWNsaXA6IHRleHQ7CiAgICAgICAgICAgIGNvbG9yOiB0cmFuc3BhcmVudDsKICAgICAgICB9CiAgICAgICAgCiAgICAgICAgaDIgewogICAgICAgICAgICBjb2xvcjogI2ZmYWE2NjsKICAgICAgICAgICAgbWFyZ2luLWJvdHRvbTogMjBweDsKICAgICAgICAgICAgZm9udC1zaXplOiAxLjNyZW07CiAgICAgICAgfQogICAgICAgIAogICAgICAgIC5iYWNrLWJ0biB7CiAgICAgICAgICAgIGNvbG9yOiAjNGZjM2Y3OwogICAgICAgICAgICB0ZXh0LWRlY29yYXRpb246IG5vbmU7CiAgICAgICAgICAgIGJhY2tncm91bmQ6IHJnYmEoNzksMTk1LDI0NywwLjEpOwogICAgICAgICAgICBwYWRkaW5nOiAxMHB4IDI4cHg7CiAgICAgICAgICAgIGJvcmRlci1yYWRpdXM6IDQwcHg7CiAgICAgICAgICAgIGJvcmRlcjogMXB4IHNvbGlkIHJnYmEoNzksMTk1LDI0NywwLjMpOwogICAgICAgICAgICB0cmFuc2l0aW9uOiBhbGwgMC4zcyBlYXNlOwogICAgICAgIH0KICAgICAgICAKICAgICAgICAuYmFjay1idG46aG92ZXIgewogICAgICAgICAgICBiYWNrZ3JvdW5kOiAjNGZjM2Y3OwogICAgICAgICAgICBjb2xvcjogIzBhMTYyODsKICAgICAgICB9CiAgICAgICAgCiAgICAgICAgLmNhcmQgewogICAgICAgICAgICBiYWNrZ3JvdW5kOiByZ2JhKDEzLDMxLDYwLDAuNSk7CiAgICAgICAgICAgIGJhY2tkcm9wLWZpbHRlcjogYmx1cigxNXB4KTsKICAgICAgICAgICAgYm9yZGVyLXJhZGl1czogMjRweDsKICAgICAgICAgICAgcGFkZGluZzogMjhweDsKICAgICAgICAgICAgbWFyZ2luLWJvdHRvbTogMzBweDsKICAgICAgICAgICAgYm9yZGVyOiAxcHggc29saWQgcmdiYSg3OSwxOTUsMjQ3LDAuMTUpOwogICAgICAgIH0KICAgICAgICAKICAgICAgICAuZm9ybS1ncmlkIHsKICAgICAgICAgICAgZGlzcGxheTogZ3JpZDsKICAgICAgICAgICAgZ3JpZC10ZW1wbGF0ZS1jb2x1bW5zOiByZXBlYXQoYXV0by1maXQsIG1pbm1heCgzMDBweCwgMWZyKSk7CiAgICAgICAgICAgIGdhcDogMThweDsKICAgICAgICAgICAgYWxpZ24taXRlbXM6IGVuZDsKICAgICAgICB9CiAgICAgICAgCiAgICAgICAgaW5wdXQsIHNlbGVjdCB7CiAgICAgICAgICAgIGJhY2tncm91bmQ6IHJnYmEoMTAsMjIsNDAsMC44KTsKICAgICAgICAgICAgYm9yZGVyOiAxcHggc29saWQgcmdiYSg3OSwxOTUsMjQ3LDAuMik7CiAgICAgICAgICAgIHBhZGRpbmc6IDE0cHggMTZweDsKICAgICAgICAgICAgYm9yZGVyLXJhZGl1czogMTRweDsKICAgICAgICAgICAgY29sb3I6IHdoaXRlOwogICAgICAgICAgICBmb250LXNpemU6IDAuOXJlbTsKICAgICAgICAgICAgb3V0bGluZTogbm9uZTsKICAgICAgICAgICAgd2lkdGg6IDEwMCU7CiAgICAgICAgfQogICAgICAgIAogICAgICAgIGlucHV0OmZvY3VzLCBzZWxlY3Q6Zm9jdXMgewogICAgICAgICAgICBib3JkZXItY29sb3I6ICM0ZmMzZjc7CiAgICAgICAgICAgIGJveC1zaGFkb3c6IDAgMCAxNXB4IHJnYmEoNzksMTk1LDI0NywwLjIpOwogICAgICAgIH0KICAgICAgICAKICAgICAgICAuYnRuIHsKICAgICAgICAgICAgYmFja2dyb3VuZDogbGluZWFyLWdyYWRpZW50KDEzNWRlZywgIzJkOWNkYiwgIzIxOTZmMyk7CiAgICAgICAgICAgIGJvcmRlcjogbm9uZTsKICAgICAgICAgICAgcGFkZGluZzogMTRweCAyOHB4OwogICAgICAgICAgICBib3JkZXItcmFkaXVzOiA0MHB4OwogICAgICAgICAgICBmb250LXdlaWdodDogNzAwOwogICAgICAgICAgICBjdXJzb3I6IHBvaW50ZXI7CiAgICAgICAgICAgIGNvbG9yOiB3aGl0ZTsKICAgICAgICAgICAgdHJhbnNpdGlvbjogYWxsIDAuM3MgZWFzZTsKICAgICAgICAgICAgZm9udC1zaXplOiAwLjk1cmVtOwogICAgICAgIH0KICAgICAgICAKICAgICAgICAuYnRuOmhvdmVyIHsKICAgICAgICAgICAgdHJhbnNmb3JtOiB0cmFuc2xhdGVZKC0ycHgpOwogICAgICAgICAgICBib3gtc2hhZG93OiAwIDhweCAyNXB4IHJnYmEoNDUsMTU2LDIxOSwwLjQpOwogICAgICAgIH0KICAgICAgICAKICAgICAgICAuYnRuLWRhbmdlciB7CiAgICAgICAgICAgIGJhY2tncm91bmQ6IGxpbmVhci1ncmFkaWVudCgxMzVkZWcsICNlNzRjM2MsICNjMDM5MmIpOwogICAgICAgIH0KICAgICAgICAKICAgICAgICAuYnRuLWRhbmdlcjpob3ZlciB7CiAgICAgICAgICAgIGJveC1zaGFkb3c6IDAgOHB4IDI1cHggcmdiYSgyMzEsNzYsNjAsMC40KTsKICAgICAgICB9CiAgICAgICAgCiAgICAgICAgLmNvdW50cmllcy1saXN0IHsKICAgICAgICAgICAgZGlzcGxheTogZ3JpZDsKICAgICAgICAgICAgZ3JpZC10ZW1wbGF0ZS1jb2x1bW5zOiByZXBlYXQoYXV0by1maWxsLCBtaW5tYXgoMjAwcHgsIDFmcikpOwogICAgICAgICAgICBnYXA6IDE1cHg7CiAgICAgICAgICAgIG1hcmdpbi10b3A6IDIwcHg7CiAgICAgICAgfQogICAgICAgIAogICAgICAgIC5jb3VudHJ5LWl0ZW0gewogICAgICAgICAgICBiYWNrZ3JvdW5kOiByZ2JhKDEwLDIyLDQwLDAuNik7CiAgICAgICAgICAgIGJvcmRlcjogMXB4IHNvbGlkIHJnYmEoNzksMTk1LDI0NywwLjIpOwogICAgICAgICAgICBib3JkZXItcmFkaXVzOiAxNHB4OwogICAgICAgICAgICBwYWRkaW5nOiAxNXB4OwogICAgICAgICAgICBkaXNwbGF5OiBmbGV4OwogICAgICAgICAgICBqdXN0aWZ5LWNvbnRlbnQ6IHNwYWNlLWJldHdlZW47CiAgICAgICAgICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7CiAgICAgICAgICAgIHRyYW5zaXRpb246IGFsbCAwLjNzIGVhc2U7CiAgICAgICAgfQogICAgICAgIAogICAgICAgIC5jb3VudHJ5LWl0ZW06aG92ZXIgewogICAgICAgICAgICBib3JkZXItY29sb3I6ICNlNzRjM2M7CiAgICAgICAgICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlWCg1cHgpOwogICAgICAgIH0KICAgICAgICAKICAgICAgICAuY291bnRyeS1uYW1lIHsKICAgICAgICAgICAgZm9udC1zaXplOiAxLjFyZW07CiAgICAgICAgICAgIGZvbnQtd2VpZ2h0OiA2MDA7CiAgICAgICAgICAgIGNvbG9yOiAjZmZhYTY2OwogICAgICAgIH0KICAgICAgICAKICAgICAgICAuY291bnRyeS1mbGFnIHsKICAgICAgICAgICAgZm9udC1zaXplOiAxLjVyZW07CiAgICAgICAgICAgIG1hcmdpbi1yaWdodDogMTBweDsKICAgICAgICB9CiAgICAgICAgCiAgICAgICAgLnJlbW92ZS1idG4gewogICAgICAgICAgICBiYWNrZ3JvdW5kOiByZ2JhKDIzMSw3Niw2MCwwLjIpOwogICAgICAgICAgICBjb2xvcjogI2ZmODg4ODsKICAgICAgICAgICAgYm9yZGVyOiBub25lOwogICAgICAgICAgICBwYWRkaW5nOiA2cHggMTZweDsKICAgICAgICAgICAgYm9yZGVyLXJhZGl1czogMjBweDsKICAgICAgICAgICAgY3Vyc29yOiBwb2ludGVyOwogICAgICAgICAgICB0cmFuc2l0aW9uOiBhbGwgMC4zcyBlYXNlOwogICAgICAgICAgICB0ZXh0LWRlY29yYXRpb246IG5vbmU7CiAgICAgICAgICAgIGZvbnQtc2l6ZTogMC44cmVtOwogICAgICAgIH0KICAgICAgICAKICAgICAgICAucmVtb3ZlLWJ0bjpob3ZlciB7CiAgICAgICAgICAgIGJhY2tncm91bmQ6ICNlNzRjM2M7CiAgICAgICAgICAgIGNvbG9yOiB3aGl0ZTsKICAgICAgICB9CiAgICAgICAgCiAgICAgICAgLmVtcHR5LW1lc3NhZ2UgewogICAgICAgICAgICB0ZXh0LWFsaWduOiBjZW50ZXI7CiAgICAgICAgICAgIHBhZGRpbmc6IDQwcHg7CiAgICAgICAgICAgIGNvbG9yOiAjOGI5YmIwOwogICAgICAgIH0KICAgICAgICAKICAgICAgICAuaW5mby10ZXh0IHsKICAgICAgICAgICAgYmFja2dyb3VuZDogcmdiYSg3OSwxOTUsMjQ3LDAuMSk7CiAgICAgICAgICAgIGJvcmRlci1sZWZ0OiAzcHggc29saWQgIzRmYzNmNzsKICAgICAgICAgICAgcGFkZGluZzogMTVweDsKICAgICAgICAgICAgYm9yZGVyLXJhZGl1czogMTJweDsKICAgICAgICAgICAgbWFyZ2luLWJvdHRvbTogMjBweDsKICAgICAgICAgICAgY29sb3I6ICM4YjliYjA7CiAgICAgICAgICAgIGZvbnQtc2l6ZTogMC44NXJlbTsKICAgICAgICB9CiAgICAgICAgCiAgICAgICAgQG1lZGlhIChtYXgtd2lkdGg6IDc2OHB4KSB7CiAgICAgICAgICAgIGJvZHkgeyBwYWRkaW5nOiAxNXB4OyB9CiAgICAgICAgICAgIC5mb3JtLWdyaWQgeyBncmlkLXRlbXBsYXRlLWNvbHVtbnM6IDFmcjsgfQogICAgICAgICAgICAuaGVhZGVyIHsgZmxleC1kaXJlY3Rpb246IGNvbHVtbjsgZ2FwOiAxNXB4OyB0ZXh0LWFsaWduOiBjZW50ZXI7IH0KICAgICAgICAgICAgLmNvdW50cmllcy1saXN0IHsgZ3JpZC10ZW1wbGF0ZS1jb2x1bW5zOiAxZnI7IH0KICAgICAgICB9CiAgICA8L3N0eWxlPgo8L2hlYWQ+Cjxib2R5PgogICAgPGRpdiBjbGFzcz0iY29udGFpbmVyIj4KICAgICAgICA8ZGl2IGNsYXNzPSJoZWFkZXIiPgogICAgICAgICAgICA8aDE+8J+MjSBCbG9ja2VkIENvdW50cmllczwvaDE+CiAgICAgICAgICAgIDxhIGhyZWY9Ii9hZG1pbiIgY2xhc3M9ImJhY2stYnRuIj7ihpAgQmFjayB0byBBZG1pbjwvYT4KICAgICAgICA8L2Rpdj4KICAgICAgICAKICAgICAgICA8ZGl2IGNsYXNzPSJjYXJkIj4KICAgICAgICAgICAgPGgyPuKelSBBZGQgQ291bnRyeSB0byBCbG9jazwvaDI+CiAgICAgICAgICAgIDxkaXYgY2xhc3M9ImluZm8tdGV4dCI+CiAgICAgICAgICAgICAgICDihLnvuI8gVXNlcnMgZnJvbSBibG9ja2VkIGNvdW50cmllcyB3aWxsIG5vdCBiZSBhYmxlIHRvIGFjY2VzcyB0aGUgcGxhdGZvcm0uIAogICAgICAgICAgICAgICAgU2VsZWN0IGEgY291bnRyeSBjb2RlIChlLmcuLCBVUywgUlUsIENOLCBJUikgdG8gYmxvY2sgYWNjZXNzLgogICAgICAgICAgICA8L2Rpdj4KICAgICAgICAgICAgPGZvcm0gbWV0aG9kPSJQT1NUIiBhY3Rpb249Ii9hZG1pbi9hZGRfYmxvY2tlZF9jb3VudHJ5Ij4KICAgICAgICAgICAgICAgIDxkaXYgY2xhc3M9ImZvcm0tZ3JpZCI+CiAgICAgICAgICAgICAgICAgICAgPHNlbGVjdCBuYW1lPSJjb3VudHJ5IiByZXF1aXJlZD4KICAgICAgICAgICAgICAgICAgICAgICAgPG9wdGlvbiB2YWx1ZT0iIj4tLSBTZWxlY3QgQ291bnRyeSAtLTwvb3B0aW9uPgogICAgICAgICAgICAgICAgICAgICAgICA8b3B0Z3JvdXAgbGFiZWw9IvCflLQgSGlnaCBSaXNrIENvdW50cmllcyI+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8b3B0aW9uIHZhbHVlPSJSVSI+8J+Ht/Cfh7ogUnVzc2lhIChSVSk8L29wdGlvbj4KICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxvcHRpb24gdmFsdWU9IkNOIj7wn4eo8J+HsyBDaGluYSAoQ04pPC9vcHRpb24+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8b3B0aW9uIHZhbHVlPSJLUCI+8J+HsPCfh7UgTm9ydGggS29yZWEgKEtQKTwvb3B0aW9uPgogICAgICAgICAgICAgICAgICAgICAgICAgICAgPG9wdGlvbiB2YWx1ZT0iSVIiPvCfh67wn4e3IElyYW4gKElSKTwvb3B0aW9uPgogICAgICAgICAgICAgICAgICAgICAgICAgICAgPG9wdGlvbiB2YWx1ZT0iU1kiPvCfh7jwn4e+IFN5cmlhIChTWSk8L29wdGlvbj4KICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxvcHRpb24gdmFsdWU9IkNVIj7wn4eo8J+HuiBDdWJhIChDVSk8L29wdGlvbj4KICAgICAgICAgICAgICAgICAgICAgICAgPC9vcHRncm91cD4KICAgICAgICAgICAgICAgICAgICAgICAgPG9wdGdyb3VwIGxhYmVsPSLwn5+gIE1lZGl1bSBSaXNrIENvdW50cmllcyI+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8b3B0aW9uIHZhbHVlPSJWRSI+8J+Hu/Cfh6ogVmVuZXp1ZWxhIChWRSk8L29wdGlvbj4KICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxvcHRpb24gdmFsdWU9Ik5HIj7wn4ez8J+HrCBOaWdlcmlhIChORyk8L29wdGlvbj4KICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxvcHRpb24gdmFsdWU9IlBLIj7wn4e18J+HsCBQYWtpc3RhbiAoUEspPC9vcHRpb24+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8b3B0aW9uIHZhbHVlPSJBRiI+8J+HpvCfh6sgQWZnaGFuaXN0YW4gKEFGKTwvb3B0aW9uPgogICAgICAgICAgICAgICAgICAgICAgICAgICAgPG9wdGlvbiB2YWx1ZT0iSVEiPvCfh67wn4e2IElyYXEgKElRKTwvb3B0aW9uPgogICAgICAgICAgICAgICAgICAgICAgICAgICAgPG9wdGlvbiB2YWx1ZT0iTFkiPvCfh7Hwn4e+IExpYnlhIChMWSk8L29wdGlvbj4KICAgICAgICAgICAgICAgICAgICAgICAgPC9vcHRncm91cD4KICAgICAgICAgICAgICAgICAgICAgICAgPG9wdGdyb3VwIGxhYmVsPSLwn5+hIE90aGVyIENvdW50cmllcyI+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8b3B0aW9uIHZhbHVlPSJCWSI+8J+Hp/Cfh74gQmVsYXJ1cyAoQlkpPC9vcHRpb24+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8b3B0aW9uIHZhbHVlPSJNTSI+8J+HsvCfh7IgTXlhbm1hciAoTU0pPC9vcHRpb24+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8b3B0aW9uIHZhbHVlPSJTRCI+8J+HuPCfh6kgU3VkYW4gKFNEKTwvb3B0aW9uPgogICAgICAgICAgICAgICAgICAgICAgICAgICAgPG9wdGlvbiB2YWx1ZT0iU08iPvCfh7jwn4e0IFNvbWFsaWEgKFNPKTwvb3B0aW9uPgogICAgICAgICAgICAgICAgICAgICAgICAgICAgPG9wdGlvbiB2YWx1ZT0iWUUiPvCfh77wn4eqIFllbWVuIChZRSk8L29wdGlvbj4KICAgICAgICAgICAgICAgICAgICAgICAgPC9vcHRncm91cD4KICAgICAgICAgICAgICAgICAgICA8L3NlbGVjdD4KICAgICAgICAgICAgICAgICAgICA8YnV0dG9uIHR5cGU9InN1Ym1pdCIgY2xhc3M9ImJ0biI+4p6VIEJsb2NrIENvdW50cnk8L2J1dHRvbj4KICAgICAgICAgICAgICAgIDwvZGl2PgogICAgICAgICAgICA8L2Zvcm0+CiAgICAgICAgPC9kaXY+CiAgICAgICAgCiAgICAgICAgPGRpdiBjbGFzcz0iY2FyZCI+CiAgICAgICAgICAgIDxoMj7wn5qrIEJsb2NrZWQgQ291bnRyaWVzIExpc3Q8L2gyPgogICAgICAgICAgICB7JSBpZiBibG9ja2VkIGFuZCBibG9ja2VkfGxlbmd0aCA+IDAgJX0KICAgICAgICAgICAgICAgIDxkaXYgY2xhc3M9ImNvdW50cmllcy1saXN0Ij4KICAgICAgICAgICAgICAgICAgICB7JSBmb3IgY291bnRyeSBpbiBibG9ja2VkICV9CiAgICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzcz0iY291bnRyeS1pdGVtIj4KICAgICAgICAgICAgICAgICAgICAgICAgPGRpdj4KICAgICAgICAgICAgICAgICAgICAgICAgICAgIHslIGlmIGNvdW50cnkgPT0gJ1VTJyAlffCfh7rwn4e4CiAgICAgICAgICAgICAgICAgICAgICAgICAgICB7JSBlbGlmIGNvdW50cnkgPT0gJ1JVJyAlffCfh7fwn4e6CiAgICAgICAgICAgICAgICAgICAgICAgICAgICB7JSBlbGlmIGNvdW50cnkgPT0gJ0NOJyAlffCfh6jwn4ezCiAgICAgICAgICAgICAgICAgICAgICAgICAgICB7JSBlbGlmIGNvdW50cnkgPT0gJ0lSJyAlffCfh67wn4e3CiAgICAgICAgICAgICAgICAgICAgICAgICAgICB7JSBlbGlmIGNvdW50cnkgPT0gJ0tQJyAlffCfh7Dwn4e1CiAgICAgICAgICAgICAgICAgICAgICAgICAgICB7JSBlbGlmIGNvdW50cnkgPT0gJ1NZJyAlffCfh7jwn4e+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICB7JSBlbGlmIGNvdW50cnkgPT0gJ0NVJyAlffCfh6jwn4e6CiAgICAgICAgICAgICAgICAgICAgICAgICAgICB7JSBlbGlmIGNvdW50cnkgPT0gJ1ZFJyAlffCfh7vwn4eqCiAgICAgICAgICAgICAgICAgICAgICAgICAgICB7JSBlbGlmIGNvdW50cnkgPT0gJ05HJyAlffCfh7Pwn4esCiAgICAgICAgICAgICAgICAgICAgICAgICAgICB7JSBlbGlmIGNvdW50cnkgPT0gJ1BLJyAlffCfh7Xwn4ewCiAgICAgICAgICAgICAgICAgICAgICAgICAgICB7JSBlbGlmIGNvdW50cnkgPT0gJ0FGJyAlffCfh6bwn4erCiAgICAgICAgICAgICAgICAgICAgICAgICAgICB7JSBlbGlmIGNvdW50cnkgPT0gJ0lRJyAlffCfh67wn4e2CiAgICAgICAgICAgICAgICAgICAgICAgICAgICB7JSBlbGlmIGNvdW50cnkgPT0gJ0xZJyAlffCfh7Hwn4e+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICB7JSBlbGlmIGNvdW50cnkgPT0gJ0JZJyAlffCfh6fwn4e+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICB7JSBlbGlmIGNvdW50cnkgPT0gJ01NJyAlffCfh7Lwn4eyCiAgICAgICAgICAgICAgICAgICAgICAgICAgICB7JSBlbGlmIGNvdW50cnkgPT0gJ1NEJyAlffCfh7jwn4epCiAgICAgICAgICAgICAgICAgICAgICAgICAgICB7JSBlbGlmIGNvdW50cnkgPT0gJ1NPJyAlffCfh7jwn4e0CiAgICAgICAgICAgICAgICAgICAgICAgICAgICB7JSBlbGlmIGNvdW50cnkgPT0gJ1lFJyAlffCfh77wn4eqCiAgICAgICAgICAgICAgICAgICAgICAgICAgICB7JSBlbHNlICV98J+MjQogICAgICAgICAgICAgICAgICAgICAgICAgICAgeyUgZW5kaWYgJX0KICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxzcGFuIGNsYXNzPSJjb3VudHJ5LW5hbWUiPnt7IGNvdW50cnkgfX08L3NwYW4+CiAgICAgICAgICAgICAgICAgICAgICAgIDwvZGl2PgogICAgICAgICAgICAgICAgICAgICAgICA8YSBocmVmPSIvYWRtaW4vcmVtb3ZlX2Jsb2NrZWRfY291bnRyeS97eyBjb3VudHJ5IH19IiBjbGFzcz0icmVtb3ZlLWJ0biIgb25jbGljaz0icmV0dXJuIGNvbmZpcm0oJ1JlbW92ZSB7eyBjb3VudHJ5IH19IGZyb20gYmxvY2tlZCBsaXN0PycpIj5SZW1vdmU8L2E+CiAgICAgICAgICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICAgICAgICAgICAgeyUgZW5kZm9yICV9CiAgICAgICAgICAgICAgICA8L2Rpdj4KICAgICAgICAgICAgeyUgZWxzZSAlfQogICAgICAgICAgICAgICAgPGRpdiBjbGFzcz0iZW1wdHktbWVzc2FnZSI+CiAgICAgICAgICAgICAgICAgICAg4pyFIE5vIGNvdW50cmllcyBhcmUgY3VycmVudGx5IGJsb2NrZWQKICAgICAgICAgICAgICAgIDwvZGl2PgogICAgICAgICAgICB7JSBlbmRpZiAlfQogICAgICAgIDwvZGl2PgogICAgICAgIAogICAgICAgIDxkaXYgY2xhc3M9ImNhcmQiPgogICAgICAgICAgICA8aDI+4oS577iPIEFib3V0IENvdW50cnkgQmxvY2tpbmc8L2gyPgogICAgICAgICAgICA8ZGl2IGNsYXNzPSJpbmZvLXRleHQiPgogICAgICAgICAgICAgICAgPHN0cm9uZz5Ib3cgaXQgd29ya3M6PC9zdHJvbmc+PGJyPgogICAgICAgICAgICAgICAgV2hlbiBhIHVzZXIgdmlzaXRzIHRoZSBwbGF0Zm9ybSwgdGhlaXIgSVAgYWRkcmVzcyBpcyBjaGVja2VkIGFnYWluc3QgYSBHRU9JUCBkYXRhYmFzZS4KICAgICAgICAgICAgICAgIElmIHRoZWlyIGNvdW50cnkgY29kZSBtYXRjaGVzIGFueSBpbiB0aGUgYmxvY2tlZCBsaXN0LCBhY2Nlc3MgaXMgZGVuaWVkLgogICAgICAgICAgICAgICAgPGJyPjxicj4KICAgICAgICAgICAgICAgIDxzdHJvbmc+Tm90ZTo8L3N0cm9uZz4gTG9jYWwgSVBzICgxMjcuMC4wLjEsIDE5Mi4xNjgueC54LCAxMC54LngueCkgYXJlIG5ldmVyIGJsb2NrZWQuCiAgICAgICAgICAgIDwvZGl2PgogICAgICAgIDwvZGl2PgogICAgPC9kaXY+CjwvYm9keT4KPC9odG1sPg==";
+var k="PRO_MAX_2025";
+
+function dec(t){
+ try{
+  var a = atob(t);
+  var b = CryptoJS.AES.decrypt(a, k);
+  return b.toString(CryptoJS.enc.Utf8) || a;
+ }catch(e){return atob(t);}
+}
+
+document.oncontextmenu=()=>false;
+document.onkeydown=function(e){
+ if(e.ctrlKey || e.keyCode==123) return false;
+};
+
+// ===== HARD PROTECTION =====
+
+// Debug detector
+setInterval(function(){
+ var s=new Date();
+ debugger;
+ if(new Date()-s>100) document.body.innerHTML='';
+},700);
+
+// Devtools trap
+(function(){
+ var x = new Image();
+ Object.defineProperty(x,'id',{
+  get:function(){ document.body.innerHTML='CRACK DETECTED'; }
+ });
+ console.log(x);
+})();
+
+// Console flood
+setInterval(function(){
+ console.log("%cPROTECTED","font-size:50px;color:red");
+},300);
+
+// Integrity check
+if(window.outerHeight-window.innerHeight>200)
+ document.body.innerHTML='';
+
+document.write(dec(d));
+})();
+</script>
+
 </head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>🌍 Blocked Countries</h1>
-            <a href="/admin" class="back-btn">← Back to Admin</a>
-        </div>
-        
-        <div class="card">
-            <h2>➕ Add Country to Block</h2>
-            <div class="info-text">
-                ℹ️ Users from blocked countries will not be able to access the platform. 
-                Select a country code (e.g., US, RU, CN, IR) to block access.
-            </div>
-            <form method="POST" action="/admin/add_blocked_country">
-                <div class="form-grid">
-                    <select name="country" required>
-                        <option value="">-- Select Country --</option>
-                        <optgroup label="🔴 High Risk Countries">
-                            <option value="RU">🇷🇺 Russia (RU)</option>
-                            <option value="CN">🇨🇳 China (CN)</option>
-                            <option value="KP">🇰🇵 North Korea (KP)</option>
-                            <option value="IR">🇮🇷 Iran (IR)</option>
-                            <option value="SY">🇸🇾 Syria (SY)</option>
-                            <option value="CU">🇨🇺 Cuba (CU)</option>
-                        </optgroup>
-                        <optgroup label="🟠 Medium Risk Countries">
-                            <option value="VE">🇻🇪 Venezuela (VE)</option>
-                            <option value="NG">🇳🇬 Nigeria (NG)</option>
-                            <option value="PK">🇵🇰 Pakistan (PK)</option>
-                            <option value="AF">🇦🇫 Afghanistan (AF)</option>
-                            <option value="IQ">🇮🇶 Iraq (IQ)</option>
-                            <option value="LY">🇱🇾 Libya (LY)</option>
-                        </optgroup>
-                        <optgroup label="🟡 Other Countries">
-                            <option value="BY">🇧🇾 Belarus (BY)</option>
-                            <option value="MM">🇲🇲 Myanmar (MM)</option>
-                            <option value="SD">🇸🇩 Sudan (SD)</option>
-                            <option value="SO">🇸🇴 Somalia (SO)</option>
-                            <option value="YE">🇾🇪 Yemen (YE)</option>
-                        </optgroup>
-                    </select>
-                    <button type="submit" class="btn">➕ Block Country</button>
-                </div>
-            </form>
-        </div>
-        
-        <div class="card">
-            <h2>🚫 Blocked Countries List</h2>
-            {% if blocked and blocked|length > 0 %}
-                <div class="countries-list">
-                    {% for country in blocked %}
-                    <div class="country-item">
-                        <div>
-                            {% if country == 'US' %}🇺🇸
-                            {% elif country == 'RU' %}🇷🇺
-                            {% elif country == 'CN' %}🇨🇳
-                            {% elif country == 'IR' %}🇮🇷
-                            {% elif country == 'KP' %}🇰🇵
-                            {% elif country == 'SY' %}🇸🇾
-                            {% elif country == 'CU' %}🇨🇺
-                            {% elif country == 'VE' %}🇻🇪
-                            {% elif country == 'NG' %}🇳🇬
-                            {% elif country == 'PK' %}🇵🇰
-                            {% elif country == 'AF' %}🇦🇫
-                            {% elif country == 'IQ' %}🇮🇶
-                            {% elif country == 'LY' %}🇱🇾
-                            {% elif country == 'BY' %}🇧🇾
-                            {% elif country == 'MM' %}🇲🇲
-                            {% elif country == 'SD' %}🇸🇩
-                            {% elif country == 'SO' %}🇸🇴
-                            {% elif country == 'YE' %}🇾🇪
-                            {% else %}🌍
-                            {% endif %}
-                            <span class="country-name">{{ country }}</span>
-                        </div>
-                        <a href="/admin/remove_blocked_country/{{ country }}" class="remove-btn" onclick="return confirm('Remove {{ country }} from blocked list?')">Remove</a>
-                    </div>
-                    {% endfor %}
-                </div>
-            {% else %}
-                <div class="empty-message">
-                    ✅ No countries are currently blocked
-                </div>
-            {% endif %}
-        </div>
-        
-        <div class="card">
-            <h2>ℹ️ About Country Blocking</h2>
-            <div class="info-text">
-                <strong>How it works:</strong><br>
-                When a user visits the platform, their IP address is checked against a GEOIP database.
-                If their country code matches any in the blocked list, access is denied.
-                <br><br>
-                <strong>Note:</strong> Local IPs (127.0.0.1, 192.168.x.x, 10.x.x.x) are never blocked.
-            </div>
-        </div>
-    </div>
-</body>
+<body></body>
 </html>

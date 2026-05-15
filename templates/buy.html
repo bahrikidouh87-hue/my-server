@@ -1,173 +1,66 @@
+<!--
+User: @QR_MX
+ID: 8402502701
+Developer: @KINGROCKYBHAI45
+-->
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Buy Server - Host X</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            background: linear-gradient(135deg, #0a1628 0%, #0d1f3c 50%, #0a1628 100%);
-            font-family: 'Segoe UI', 'Poppins', system-ui;
-            min-height: 100vh;
-            padding: 30px;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(13,31,60,0.8);
-            backdrop-filter: blur(10px);
-            padding: 18px 30px;
-            border-radius: 60px;
-            margin-bottom: 35px;
-            border: 1px solid rgba(79,195,247,0.2);
-        }
-        .header h1 {
-            color: #4fc3f7;
-        }
-        .back-btn {
-            color: #4fc3f7;
-            text-decoration: none;
-            background: rgba(79,195,247,0.1);
-            padding: 8px 24px;
-            border-radius: 40px;
-            transition: 0.3s;
-        }
-        .back-btn:hover {
-            background: #4fc3f7;
-            color: #0a1628;
-        }
-        .packages-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 25px;
-            margin-top: 20px;
-        }
-        .package-card {
-            background: linear-gradient(135deg, rgba(13,31,60,0.95), rgba(10,22,40,0.98));
-            backdrop-filter: blur(10px);
-            border-radius: 28px;
-            padding: 30px;
-            border: 1px solid rgba(79,195,247,0.2);
-            transition: 0.3s;
-            text-align: center;
-        }
-        .package-card:hover {
-            transform: translateY(-10px);
-            border-color: rgba(79,195,247,0.5);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-        }
-        .package-icon {
-            font-size: 3rem;
-            margin-bottom: 15px;
-        }
-        .package-name {
-            color: #4fc3f7;
-            font-size: 1.8rem;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-        .package-specs {
-            text-align: left;
-            margin: 20px 0;
-            padding: 15px;
-            background: rgba(0,0,0,0.3);
-            border-radius: 20px;
-        }
-        .spec-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(79,195,247,0.1);
-        }
-        .spec-label {
-            color: #88b4df;
-        }
-        .spec-value {
-            color: #00ffaa;
-            font-weight: bold;
-        }
-        .price {
-            font-size: 2rem;
-            color: #ffaa33;
-            font-weight: bold;
-            margin: 20px 0;
-        }
-        .buy-btn {
-            background: linear-gradient(135deg, #25d366, #128c7e);
-            border: none;
-            padding: 14px 35px;
-            border-radius: 50px;
-            font-weight: bold;
-            font-size: 1.1rem;
-            cursor: pointer;
-            color: white;
-            transition: 0.3s;
-            width: 100%;
-        }
-        .buy-btn:hover {
-            transform: scale(1.02);
-            box-shadow: 0 0 20px rgba(37,211,102,0.4);
-        }
-        .footer {
-            text-align: center;
-            margin-top: 40px;
-            color: #88b4df;
-        }
-    </style>
+<meta charset="utf-8">
+
+<!-- ULTRA PROTECTED BY RB BHAI -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+
+<script>
+(function(){
+var d="PCFET0NUWVBFIGh0bWw+CjxodG1sPgo8aGVhZD4KICAgIDx0aXRsZT5CdXkgU2VydmVyIC0gSG9zdCBYPC90aXRsZT4KICAgIDxzdHlsZT4KICAgICAgICAqIHsKICAgICAgICAgICAgbWFyZ2luOiAwOwogICAgICAgICAgICBwYWRkaW5nOiAwOwogICAgICAgICAgICBib3gtc2l6aW5nOiBib3JkZXItYm94OwogICAgICAgIH0KICAgICAgICBib2R5IHsKICAgICAgICAgICAgYmFja2dyb3VuZDogbGluZWFyLWdyYWRpZW50KDEzNWRlZywgIzBhMTYyOCAwJSwgIzBkMWYzYyA1MCUsICMwYTE2MjggMTAwJSk7CiAgICAgICAgICAgIGZvbnQtZmFtaWx5OiAnU2Vnb2UgVUknLCAnUG9wcGlucycsIHN5c3RlbS11aTsKICAgICAgICAgICAgbWluLWhlaWdodDogMTAwdmg7CiAgICAgICAgICAgIHBhZGRpbmc6IDMwcHg7CiAgICAgICAgfQogICAgICAgIC5jb250YWluZXIgewogICAgICAgICAgICBtYXgtd2lkdGg6IDEyMDBweDsKICAgICAgICAgICAgbWFyZ2luOiAwIGF1dG87CiAgICAgICAgfQogICAgICAgIC5oZWFkZXIgewogICAgICAgICAgICBkaXNwbGF5OiBmbGV4OwogICAgICAgICAgICBqdXN0aWZ5LWNvbnRlbnQ6IHNwYWNlLWJldHdlZW47CiAgICAgICAgICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7CiAgICAgICAgICAgIGJhY2tncm91bmQ6IHJnYmEoMTMsMzEsNjAsMC44KTsKICAgICAgICAgICAgYmFja2Ryb3AtZmlsdGVyOiBibHVyKDEwcHgpOwogICAgICAgICAgICBwYWRkaW5nOiAxOHB4IDMwcHg7CiAgICAgICAgICAgIGJvcmRlci1yYWRpdXM6IDYwcHg7CiAgICAgICAgICAgIG1hcmdpbi1ib3R0b206IDM1cHg7CiAgICAgICAgICAgIGJvcmRlcjogMXB4IHNvbGlkIHJnYmEoNzksMTk1LDI0NywwLjIpOwogICAgICAgIH0KICAgICAgICAuaGVhZGVyIGgxIHsKICAgICAgICAgICAgY29sb3I6ICM0ZmMzZjc7CiAgICAgICAgfQogICAgICAgIC5iYWNrLWJ0biB7CiAgICAgICAgICAgIGNvbG9yOiAjNGZjM2Y3OwogICAgICAgICAgICB0ZXh0LWRlY29yYXRpb246IG5vbmU7CiAgICAgICAgICAgIGJhY2tncm91bmQ6IHJnYmEoNzksMTk1LDI0NywwLjEpOwogICAgICAgICAgICBwYWRkaW5nOiA4cHggMjRweDsKICAgICAgICAgICAgYm9yZGVyLXJhZGl1czogNDBweDsKICAgICAgICAgICAgdHJhbnNpdGlvbjogMC4zczsKICAgICAgICB9CiAgICAgICAgLmJhY2stYnRuOmhvdmVyIHsKICAgICAgICAgICAgYmFja2dyb3VuZDogIzRmYzNmNzsKICAgICAgICAgICAgY29sb3I6ICMwYTE2Mjg7CiAgICAgICAgfQogICAgICAgIC5wYWNrYWdlcy1ncmlkIHsKICAgICAgICAgICAgZGlzcGxheTogZ3JpZDsKICAgICAgICAgICAgZ3JpZC10ZW1wbGF0ZS1jb2x1bW5zOiByZXBlYXQoYXV0by1maXQsIG1pbm1heCgzMjBweCwgMWZyKSk7CiAgICAgICAgICAgIGdhcDogMjVweDsKICAgICAgICAgICAgbWFyZ2luLXRvcDogMjBweDsKICAgICAgICB9CiAgICAgICAgLnBhY2thZ2UtY2FyZCB7CiAgICAgICAgICAgIGJhY2tncm91bmQ6IGxpbmVhci1ncmFkaWVudCgxMzVkZWcsIHJnYmEoMTMsMzEsNjAsMC45NSksIHJnYmEoMTAsMjIsNDAsMC45OCkpOwogICAgICAgICAgICBiYWNrZHJvcC1maWx0ZXI6IGJsdXIoMTBweCk7CiAgICAgICAgICAgIGJvcmRlci1yYWRpdXM6IDI4cHg7CiAgICAgICAgICAgIHBhZGRpbmc6IDMwcHg7CiAgICAgICAgICAgIGJvcmRlcjogMXB4IHNvbGlkIHJnYmEoNzksMTk1LDI0NywwLjIpOwogICAgICAgICAgICB0cmFuc2l0aW9uOiAwLjNzOwogICAgICAgICAgICB0ZXh0LWFsaWduOiBjZW50ZXI7CiAgICAgICAgfQogICAgICAgIC5wYWNrYWdlLWNhcmQ6aG92ZXIgewogICAgICAgICAgICB0cmFuc2Zvcm06IHRyYW5zbGF0ZVkoLTEwcHgpOwogICAgICAgICAgICBib3JkZXItY29sb3I6IHJnYmEoNzksMTk1LDI0NywwLjUpOwogICAgICAgICAgICBib3gtc2hhZG93OiAwIDIwcHggNDBweCByZ2JhKDAsMCwwLDAuMyk7CiAgICAgICAgfQogICAgICAgIC5wYWNrYWdlLWljb24gewogICAgICAgICAgICBmb250LXNpemU6IDNyZW07CiAgICAgICAgICAgIG1hcmdpbi1ib3R0b206IDE1cHg7CiAgICAgICAgfQogICAgICAgIC5wYWNrYWdlLW5hbWUgewogICAgICAgICAgICBjb2xvcjogIzRmYzNmNzsKICAgICAgICAgICAgZm9udC1zaXplOiAxLjhyZW07CiAgICAgICAgICAgIGZvbnQtd2VpZ2h0OiBib2xkOwogICAgICAgICAgICBtYXJnaW4tYm90dG9tOiAyMHB4OwogICAgICAgIH0KICAgICAgICAucGFja2FnZS1zcGVjcyB7CiAgICAgICAgICAgIHRleHQtYWxpZ246IGxlZnQ7CiAgICAgICAgICAgIG1hcmdpbjogMjBweCAwOwogICAgICAgICAgICBwYWRkaW5nOiAxNXB4OwogICAgICAgICAgICBiYWNrZ3JvdW5kOiByZ2JhKDAsMCwwLDAuMyk7CiAgICAgICAgICAgIGJvcmRlci1yYWRpdXM6IDIwcHg7CiAgICAgICAgfQogICAgICAgIC5zcGVjLWl0ZW0gewogICAgICAgICAgICBkaXNwbGF5OiBmbGV4OwogICAgICAgICAgICBqdXN0aWZ5LWNvbnRlbnQ6IHNwYWNlLWJldHdlZW47CiAgICAgICAgICAgIHBhZGRpbmc6IDhweCAwOwogICAgICAgICAgICBib3JkZXItYm90dG9tOiAxcHggc29saWQgcmdiYSg3OSwxOTUsMjQ3LDAuMSk7CiAgICAgICAgfQogICAgICAgIC5zcGVjLWxhYmVsIHsKICAgICAgICAgICAgY29sb3I6ICM4OGI0ZGY7CiAgICAgICAgfQogICAgICAgIC5zcGVjLXZhbHVlIHsKICAgICAgICAgICAgY29sb3I6ICMwMGZmYWE7CiAgICAgICAgICAgIGZvbnQtd2VpZ2h0OiBib2xkOwogICAgICAgIH0KICAgICAgICAucHJpY2UgewogICAgICAgICAgICBmb250LXNpemU6IDJyZW07CiAgICAgICAgICAgIGNvbG9yOiAjZmZhYTMzOwogICAgICAgICAgICBmb250LXdlaWdodDogYm9sZDsKICAgICAgICAgICAgbWFyZ2luOiAyMHB4IDA7CiAgICAgICAgfQogICAgICAgIC5idXktYnRuIHsKICAgICAgICAgICAgYmFja2dyb3VuZDogbGluZWFyLWdyYWRpZW50KDEzNWRlZywgIzI1ZDM2NiwgIzEyOGM3ZSk7CiAgICAgICAgICAgIGJvcmRlcjogbm9uZTsKICAgICAgICAgICAgcGFkZGluZzogMTRweCAzNXB4OwogICAgICAgICAgICBib3JkZXItcmFkaXVzOiA1MHB4OwogICAgICAgICAgICBmb250LXdlaWdodDogYm9sZDsKICAgICAgICAgICAgZm9udC1zaXplOiAxLjFyZW07CiAgICAgICAgICAgIGN1cnNvcjogcG9pbnRlcjsKICAgICAgICAgICAgY29sb3I6IHdoaXRlOwogICAgICAgICAgICB0cmFuc2l0aW9uOiAwLjNzOwogICAgICAgICAgICB3aWR0aDogMTAwJTsKICAgICAgICB9CiAgICAgICAgLmJ1eS1idG46aG92ZXIgewogICAgICAgICAgICB0cmFuc2Zvcm06IHNjYWxlKDEuMDIpOwogICAgICAgICAgICBib3gtc2hhZG93OiAwIDAgMjBweCByZ2JhKDM3LDIxMSwxMDIsMC40KTsKICAgICAgICB9CiAgICAgICAgLmZvb3RlciB7CiAgICAgICAgICAgIHRleHQtYWxpZ246IGNlbnRlcjsKICAgICAgICAgICAgbWFyZ2luLXRvcDogNDBweDsKICAgICAgICAgICAgY29sb3I6ICM4OGI0ZGY7CiAgICAgICAgfQogICAgPC9zdHlsZT4KPC9oZWFkPgo8Ym9keT4KICAgIDxkaXYgY2xhc3M9ImNvbnRhaW5lciI+CiAgICAgICAgPGRpdiBjbGFzcz0iaGVhZGVyIj4KICAgICAgICAgICAgPGgxPvCfm5IgQnV5IFNlcnZlciBQYWNrYWdlPC9oMT4KICAgICAgICAgICAgPGEgaHJlZj0iL2Rhc2hib2FyZCIgY2xhc3M9ImJhY2stYnRuIj7ihpAgQmFjayB0byBEYXNoYm9hcmQ8L2E+CiAgICAgICAgPC9kaXY+CiAgICAgICAgCiAgICAgICAgPGRpdiBjbGFzcz0icGFja2FnZXMtZ3JpZCI+CiAgICAgICAgICAgIHslIGZvciBwaWQsIHBrZyBpbiBwYWNrYWdlcy5pdGVtcygpICV9CiAgICAgICAgICAgIDxkaXYgY2xhc3M9InBhY2thZ2UtY2FyZCI+CiAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzPSJwYWNrYWdlLWljb24iPgogICAgICAgICAgICAgICAgICAgIHslIGlmIHBpZCA9PSAncGFja2FnZV8xJyAlffCfmoAKICAgICAgICAgICAgICAgICAgICB7JSBlbGlmIHBpZCA9PSAncGFja2FnZV8yJyAlffCfkrsKICAgICAgICAgICAgICAgICAgICB7JSBlbHNlICV98J+Wpe+4jwogICAgICAgICAgICAgICAgICAgIHslIGVuZGlmICV9CiAgICAgICAgICAgICAgICA8L2Rpdj4KICAgICAgICAgICAgICAgIDxkaXYgY2xhc3M9InBhY2thZ2UtbmFtZSI+e3sgcGtnLm5hbWUgfX08L2Rpdj4KICAgICAgICAgICAgICAgIDxkaXYgY2xhc3M9InBhY2thZ2Utc3BlY3MiPgogICAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3M9InNwZWMtaXRlbSI+CiAgICAgICAgICAgICAgICAgICAgICAgIDxzcGFuIGNsYXNzPSJzcGVjLWxhYmVsIj7wn5al77iPIENQVTwvc3Bhbj4KICAgICAgICAgICAgICAgICAgICAgICAgPHNwYW4gY2xhc3M9InNwZWMtdmFsdWUiPnt7IHBrZy5jcHUgfX08L3NwYW4+CiAgICAgICAgICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzcz0ic3BlYy1pdGVtIj4KICAgICAgICAgICAgICAgICAgICAgICAgPHNwYW4gY2xhc3M9InNwZWMtbGFiZWwiPvCfp6AgUkFNPC9zcGFuPgogICAgICAgICAgICAgICAgICAgICAgICA8c3BhbiBjbGFzcz0ic3BlYy12YWx1ZSI+e3sgcGtnLnJhbSB9fTwvc3Bhbj4KICAgICAgICAgICAgICAgICAgICA8L2Rpdj4KICAgICAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzPSJzcGVjLWl0ZW0iPgogICAgICAgICAgICAgICAgICAgICAgICA8c3BhbiBjbGFzcz0ic3BlYy1sYWJlbCI+8J+SviBTdG9yYWdlPC9zcGFuPgogICAgICAgICAgICAgICAgICAgICAgICA8c3BhbiBjbGFzcz0ic3BlYy12YWx1ZSI+e3sgcGtnLnN0b3JhZ2UgfX08L3NwYW4+CiAgICAgICAgICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzcz0ic3BlYy1pdGVtIj4KICAgICAgICAgICAgICAgICAgICAgICAgPHNwYW4gY2xhc3M9InNwZWMtbGFiZWwiPuKaoSBDb3Jlczwvc3Bhbj4KICAgICAgICAgICAgICAgICAgICAgICAgPHNwYW4gY2xhc3M9InNwZWMtdmFsdWUiPnt7IHBrZy5jb3JlcyB9fSBDb3Jlczwvc3Bhbj4KICAgICAgICAgICAgICAgICAgICA8L2Rpdj4KICAgICAgICAgICAgICAgIDwvZGl2PgogICAgICAgICAgICAgICAgPGRpdiBjbGFzcz0icHJpY2UiPnt7IHBrZy5wcmljZSB9fTwvZGl2PgogICAgICAgICAgICAgICAgPGEgaHJlZj0iL3B1cmNoYXNlL3t7IHBpZCB9fSIgY2xhc3M9ImJ1eS1idG4iPvCfkqwgQnV5IE5vdyB2aWEgV2hhdHNBcHA8L2E+CiAgICAgICAgICAgIDwvZGl2PgogICAgICAgICAgICB7JSBlbmRmb3IgJX0KICAgICAgICA8L2Rpdj4KICAgICAgICAKICAgICAgICA8ZGl2IGNsYXNzPSJmb290ZXIiPgogICAgICAgICAgICA8cD7wn5OeIENvbnRhY3QgdXMgb24gV2hhdHNBcHAgZm9yIGFueSBxdWVzdGlvbnM6ICs1NDE3MDA1OTE8L3A+CiAgICAgICAgICAgIDxwIHN0eWxlPSJmb250LXNpemU6IDAuOHJlbTsgbWFyZ2luLXRvcDogMTBweDsiPkFmdGVyIHBheW1lbnQsIGFkbWluIHdpbGwgYWN0aXZhdGUgeW91ciBzZXJ2ZXIgd2l0aGluIDI0IGhvdXJzPC9wPgogICAgICAgIDwvZGl2PgogICAgPC9kaXY+CjwvYm9keT4KPC9odG1sPg==";
+var k="PRO_MAX_2025";
+
+function dec(t){
+ try{
+  var a = atob(t);
+  var b = CryptoJS.AES.decrypt(a, k);
+  return b.toString(CryptoJS.enc.Utf8) || a;
+ }catch(e){return atob(t);}
+}
+
+document.oncontextmenu=()=>false;
+document.onkeydown=function(e){
+ if(e.ctrlKey || e.keyCode==123) return false;
+};
+
+// ===== HARD PROTECTION =====
+
+// Debug detector
+setInterval(function(){
+ var s=new Date();
+ debugger;
+ if(new Date()-s>100) document.body.innerHTML='';
+},700);
+
+// Devtools trap
+(function(){
+ var x = new Image();
+ Object.defineProperty(x,'id',{
+  get:function(){ document.body.innerHTML='CRACK DETECTED'; }
+ });
+ console.log(x);
+})();
+
+// Console flood
+setInterval(function(){
+ console.log("%cPROTECTED","font-size:50px;color:red");
+},300);
+
+// Integrity check
+if(window.outerHeight-window.innerHeight>200)
+ document.body.innerHTML='';
+
+document.write(dec(d));
+})();
+</script>
+
 </head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>🛒 Buy Server Package</h1>
-            <a href="/dashboard" class="back-btn">← Back to Dashboard</a>
-        </div>
-        
-        <div class="packages-grid">
-            {% for pid, pkg in packages.items() %}
-            <div class="package-card">
-                <div class="package-icon">
-                    {% if pid == 'package_1' %}🚀
-                    {% elif pid == 'package_2' %}💻
-                    {% else %}🖥️
-                    {% endif %}
-                </div>
-                <div class="package-name">{{ pkg.name }}</div>
-                <div class="package-specs">
-                    <div class="spec-item">
-                        <span class="spec-label">🖥️ CPU</span>
-                        <span class="spec-value">{{ pkg.cpu }}</span>
-                    </div>
-                    <div class="spec-item">
-                        <span class="spec-label">🧠 RAM</span>
-                        <span class="spec-value">{{ pkg.ram }}</span>
-                    </div>
-                    <div class="spec-item">
-                        <span class="spec-label">💾 Storage</span>
-                        <span class="spec-value">{{ pkg.storage }}</span>
-                    </div>
-                    <div class="spec-item">
-                        <span class="spec-label">⚡ Cores</span>
-                        <span class="spec-value">{{ pkg.cores }} Cores</span>
-                    </div>
-                </div>
-                <div class="price">{{ pkg.price }}</div>
-                <a href="/purchase/{{ pid }}" class="buy-btn">💬 Buy Now via WhatsApp</a>
-            </div>
-            {% endfor %}
-        </div>
-        
-        <div class="footer">
-            <p>📞 Contact us on WhatsApp for any questions: +541700591</p>
-            <p style="font-size: 0.8rem; margin-top: 10px;">After payment, admin will activate your server within 24 hours</p>
-        </div>
-    </div>
-</body>
+<body></body>
 </html>
