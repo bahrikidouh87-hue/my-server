@@ -2,3 +2,4 @@ flask
 psutil
 bcrypt
 gunicorn
+requests
