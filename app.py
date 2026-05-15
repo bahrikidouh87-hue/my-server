@@ -16,12 +16,11 @@ import hmac
 import re
 import requests
 import zipfile
-import tempfile
 import sqlite3
 from datetime import datetime, timedelta
 
 app = Flask(__name__)
-app.secret_key = 'host_x_server_super_secret_key_2024'
+app.secret_key = os.environ.get('SECRET_KEY', 'host_x_server_super_secret_key_2024')
 app.config['MAX_CONTENT_LENGTH'] = 500 * 1024 * 1024
 app.permanent_session_lifetime = timedelta(hours=24)
 
@@ -258,29 +257,379 @@ def country_block_check(ip):
     except:
         return True, ""
 
-# ========== MAIN SECURITY CHECK ==========
-@app.before_request
-def security_check():
-    if request.endpoint in ['banned_page', 'static', 'admin_blocked_countries', 'admin_security', 'login', 'logout', 'refresh_captcha']:
-        return None
+# ========== IP DETECTION FUNCTIONS ==========
+def get_client_ip():
+    if request.headers.get('X-Forwarded-For'):
+        ip = request.headers.get('X-Forwarded-For').split(',')[0].strip()
+        if ip and ip != '127.0.0.1' and ip != '::1':
+            return ip
+    
+    if request.headers.get('X-Real-IP'):
+        ip = request.headers.get('X-Real-IP')
+        if ip and ip != '127.0.0.1' and ip != '::1':
+            return ip
+    
     ip = request.remote_addr
-    if is_ip_banned(ip):
-        return render_template('banned.html', ban_duration=BAN_DURATION_HOURS, ip=ip, reason="Banned"), 403
-    if not rate_limit_check(ip):
-        return render_template('banned.html', ban_duration=BAN_DURATION_HOURS, ip=ip, reason="Rate limit"), 403
-    detect_ddos_behavior(ip, request.endpoint)
-    if 'user' in session and not validate_session_fingerprint():
-        session.clear()
-        return "Session hijacking detected!", 403
-    allowed, msg = country_block_check(ip)
-    if not allowed:
-        return msg, 403
-    return None
+    
+    if ip in ['127.0.0.1', '::1', 'localhost']:
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            s.connect(("8.8.8.8", 80))
+            ip = s.getsockname()[0]
+            s.close()
+        except:
+            pass
+    
+    return ip
 
-@app.route('/banned')
-def banned_page():
-    ip = request.remote_addr
-    return render_template('banned.html', ban_duration=BAN_DURATION_HOURS, ip=ip, reason="You have been banned")
+def parse_user_agent_advanced(user_agent_string):
+    user_agent_string = user_agent_string or ''
+    user_agent_lower = user_agent_string.lower()
+    
+    device_info = {
+        'browser': 'Unknown',
+        'browser_version': 'Unknown',
+        'os': 'Unknown',
+        'os_version': 'Unknown',
+        'device_type': 'Desktop',
+        'device_name': 'Unknown',
+        'device_brand': 'Unknown',
+        'is_mobile': False,
+        'is_tablet': False,
+        'is_bot': False
+    }
+    
+    if 'bot' in user_agent_lower or 'crawler' in user_agent_lower or 'spider' in user_agent_lower:
+        device_info['is_bot'] = True
+        device_info['device_name'] = 'Bot/Crawler'
+        return device_info
+    
+    mobile_keywords = ['mobile', 'iphone', 'android', 'blackberry', 'windows phone', 'opera mini', 'iemobile']
+    tablet_keywords = ['ipad', 'tablet', 'kindle', 'playbook', 'silk']
+    
+    for keyword in mobile_keywords:
+        if keyword in user_agent_lower:
+            device_info['is_mobile'] = True
+            device_info['device_type'] = 'Mobile'
+            break
+    
+    for keyword in tablet_keywords:
+        if keyword in user_agent_lower:
+            device_info['is_tablet'] = True
+            device_info['device_type'] = 'Tablet'
+            device_info['is_mobile'] = False
+            break
+    
+    if 'chrome' in user_agent_lower and 'edg' not in user_agent_lower and 'opr' not in user_agent_lower:
+        device_info['browser'] = 'Chrome'
+        match = re.search(r'chrome/(\d+)', user_agent_lower)
+        if match:
+            device_info['browser_version'] = match.group(1)
+    elif 'firefox' in user_agent_lower:
+        device_info['browser'] = 'Firefox'
+        match = re.search(r'firefox/(\d+)', user_agent_lower)
+        if match:
+            device_info['browser_version'] = match.group(1)
+    elif 'safari' in user_agent_lower and 'chrome' not in user_agent_lower:
+        device_info['browser'] = 'Safari'
+    elif 'edg' in user_agent_lower:
+        device_info['browser'] = 'Edge'
+    elif 'opr' in user_agent_lower or 'opera' in user_agent_lower:
+        device_info['browser'] = 'Opera'
+    elif 'msie' in user_agent_lower or 'trident' in user_agent_lower:
+        device_info['browser'] = 'Internet Explorer'
+    
+    if 'android' in user_agent_lower:
+        device_info['os'] = 'Android'
+        match = re.search(r'android (\d+)', user_agent_lower)
+        if match:
+            device_info['os_version'] = match.group(1)
+        
+        if 'samsung' in user_agent_lower:
+            device_info['device_brand'] = 'Samsung'
+            device_info['device_name'] = 'Samsung Galaxy'
+        elif 'xiaomi' in user_agent_lower or 'redmi' in user_agent_lower:
+            device_info['device_brand'] = 'Xiaomi'
+            device_info['device_name'] = 'Xiaomi'
+        elif 'huawei' in user_agent_lower:
+            device_info['device_brand'] = 'Huawei'
+            device_info['device_name'] = 'Huawei'
+        elif 'oneplus' in user_agent_lower:
+            device_info['device_brand'] = 'OnePlus'
+            device_info['device_name'] = 'OnePlus'
+        elif 'google' in user_agent_lower or 'pixel' in user_agent_lower:
+            device_info['device_brand'] = 'Google'
+            device_info['device_name'] = 'Google Pixel'
+        else:
+            device_info['device_name'] = 'Android Phone'
+        
+        if device_info['is_tablet']:
+            device_info['device_name'] = 'Android Tablet'
+    
+    elif 'iphone' in user_agent_lower:
+        device_info['os'] = 'iOS'
+        device_info['device_type'] = 'Mobile'
+        device_info['is_mobile'] = True
+        device_info['device_name'] = 'iPhone'
+        match = re.search(r'os (\d+_\d+)', user_agent_lower)
+        if match:
+            device_info['os_version'] = match.group(1).replace('_', '.')
+    
+    elif 'ipad' in user_agent_lower:
+        device_info['os'] = 'iOS'
+        device_info['device_type'] = 'Tablet'
+        device_info['is_tablet'] = True
+        device_info['device_name'] = 'iPad'
+        device_info['is_mobile'] = False
+        match = re.search(r'os (\d+_\d+)', user_agent_lower)
+        if match:
+            device_info['os_version'] = match.group(1).replace('_', '.')
+    
+    elif 'windows' in user_agent_lower:
+        device_info['os'] = 'Windows'
+        if 'windows nt 10.0' in user_agent_lower:
+            device_info['os_version'] = '10/11'
+        elif 'windows nt 6.1' in user_agent_lower:
+            device_info['os_version'] = '7'
+        elif 'windows nt 6.2' in user_agent_lower:
+            device_info['os_version'] = '8'
+        elif 'windows nt 6.3' in user_agent_lower:
+            device_info['os_version'] = '8.1'
+        device_info['device_name'] = f'Windows PC'
+    
+    elif 'mac' in user_agent_lower:
+        device_info['os'] = 'macOS'
+        device_info['device_name'] = 'Mac'
+        if 'intel' in user_agent_lower:
+            device_info['device_name'] = 'Mac Intel'
+        elif 'apple m' in user_agent_lower:
+            device_info['device_name'] = 'Mac Apple Silicon'
+    
+    elif 'linux' in user_agent_lower:
+        device_info['os'] = 'Linux'
+        device_info['device_name'] = 'Linux PC'
+    
+    if device_info['device_name'] == 'Unknown':
+        if device_info['is_mobile']:
+            device_info['device_name'] = 'Mobile Device'
+        elif device_info['is_tablet']:
+            device_info['device_name'] = 'Tablet'
+        else:
+            device_info['device_name'] = 'Desktop Computer'
+    
+    return device_info
+
+# ========== ADVANCED SESSION MANAGEMENT ==========
+
+def init_advanced_session_table():
+    db_path = os.path.join(BASE_DIR, 'hostx.db')
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS user_sessions (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT NOT NULL,
+            session_id TEXT NOT NULL,
+            ip_address TEXT,
+            user_agent TEXT,
+            device_name TEXT,
+            browser TEXT,
+            os TEXT,
+            login_time TEXT,
+            last_activity TEXT,
+            is_active INTEGER DEFAULT 1,
+            accept_header TEXT,
+            accept_language TEXT,
+            accept_encoding TEXT,
+            connection_header TEXT,
+            cache_control TEXT
+        )
+    ''')
+    
+    conn.commit()
+    conn.close()
+
+def extract_all_headers():
+    headers = {
+        'Accept': request.headers.get('Accept', '*/*'),
+        'Accept-Language': request.headers.get('Accept-Language', 'en-US,en;q=0.9'),
+        'Accept-Encoding': request.headers.get('Accept-Encoding', 'gzip, deflate'),
+        'Connection': request.headers.get('Connection', 'keep-alive'),
+        'Cache-Control': request.headers.get('Cache-Control', 'no-cache, no-store'),
+        'User-Agent': request.headers.get('User-Agent', 'Unknown'),
+        'Referer': request.headers.get('Referer', ''),
+        'Origin': request.headers.get('Origin', ''),
+        'Host': request.headers.get('Host', ''),
+        'X-Forwarded-For': request.headers.get('X-Forwarded-For', ''),
+        'X-Real-IP': request.headers.get('X-Real-IP', ''),
+        'Authorization': request.headers.get('Authorization', ''),
+        'Cookie': request.headers.get('Cookie', '')
+    }
+    return headers
+
+def save_full_session(username, session_id, ip_address, headers):
+    try:
+        user_agent = headers.get('User-Agent', '')
+        device_info = parse_user_agent_advanced(user_agent)
+        
+        db_path = os.path.join(BASE_DIR, 'hostx.db')
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+        
+        cursor.execute('''
+            UPDATE user_sessions 
+            SET is_active = 0 
+            WHERE username = ? AND is_active = 1
+        ''', (username,))
+        
+        cursor.execute('''
+            INSERT INTO user_sessions 
+            (username, session_id, ip_address, user_agent, device_name, browser, os, 
+             login_time, last_activity, is_active, accept_header, accept_language, 
+             accept_encoding, connection_header, cache_control)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?, ?, ?)
+        ''', (username, session_id, ip_address, user_agent[:500],
+              device_info['device_name'], device_info['browser'], device_info['os'],
+              datetime.now().isoformat(), datetime.now().isoformat(),
+              headers.get('Accept', '*/*'), headers.get('Accept-Language', 'en-US,en;q=0.9'),
+              headers.get('Accept-Encoding', 'gzip, deflate'), headers.get('Connection', 'keep-alive'),
+              headers.get('Cache-Control', 'no-cache, no-store')))
+        
+        conn.commit()
+        conn.close()
+        
+        print(f"[SESSION] New session: {username} | {device_info['device_name']} | {ip_address}")
+        return True
+    except Exception as e:
+        print(f"Error saving session: {e}")
+        return False
+
+def get_all_sessions_for_admin():
+    try:
+        db_path = os.path.join(BASE_DIR, 'hostx.db')
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+        cursor.execute('''
+            SELECT username, session_id, ip_address, device_name, browser, os, 
+                   login_time, last_activity, is_active, accept_header, accept_language,
+                   accept_encoding, connection_header, cache_control, user_agent
+            FROM user_sessions 
+            ORDER BY login_time DESC
+        ''')
+        sessions = cursor.fetchall()
+        conn.close()
+        
+        sessions_list = []
+        for s in sessions:
+            login_time = datetime.fromisoformat(s[6]) if s[6] else datetime.now()
+            duration = datetime.now() - login_time
+            
+            device_info = parse_user_agent_advanced(s[14] or '')
+            
+            sessions_list.append({
+                'username': s[0],
+                'session_id': s[1],
+                'ip_address': s[2] or 'Unknown',
+                'device_name': device_info['device_name'] if device_info['device_name'] != 'Unknown' else (s[3] or 'Unknown'),
+                'browser': device_info['browser'] if device_info['browser'] != 'Unknown' else (s[4] or 'Unknown'),
+                'os': device_info['os'] if device_info['os'] != 'Unknown' else (s[5] or 'Unknown'),
+                'device_type': device_info['device_type'],
+                'is_mobile': device_info['is_mobile'],
+                'login_time': s[6],
+                'last_activity': s[7],
+                'is_active': bool(s[8]),
+                'duration': f"{duration.days}d {duration.seconds//3600}h" if duration.days > 0 else f"{duration.seconds//3600}h",
+                'headers': {
+                    'Accept': s[9] or '*/*',
+                    'Accept-Language': s[10] or 'en-US,en;q=0.9',
+                    'Accept-Encoding': s[11] or 'gzip, deflate',
+                    'Connection': s[12] or 'keep-alive',
+                    'Cache-Control': s[13] or 'no-cache, no-store',
+                    'User-Agent': s[14] or 'Unknown'
+                }
+            })
+        return sessions_list
+    except Exception as e:
+        print(f"Error getting sessions: {e}")
+        return []
+
+def get_session_headers_by_id(session_id):
+    try:
+        db_path = os.path.join(BASE_DIR, 'hostx.db')
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+        cursor.execute('''
+            SELECT accept_header, accept_language, accept_encoding, connection_header, 
+                   cache_control, user_agent, ip_address, device_name, os, browser
+            FROM user_sessions 
+            WHERE session_id = ?
+        ''', (session_id,))
+        result = cursor.fetchone()
+        conn.close()
+        
+        if result:
+            device_info = parse_user_agent_advanced(result[5] or '')
+            
+            return {
+                'Accept': result[0] or '*/*',
+                'Accept-Language': result[1] or 'en-US,en;q=0.9',
+                'Accept-Encoding': result[2] or 'gzip, deflate',
+                'Connection': result[3] or 'keep-alive',
+                'Cache-Control': result[4] or 'no-cache, no-store',
+                'User-Agent': result[5] or 'Unknown',
+                'IP': result[6] or 'Unknown',
+                'Device': device_info['device_name'],
+                'Device_Type': device_info['device_type'],
+                'Device_Brand': device_info['device_brand'],
+                'OS': device_info['os'],
+                'OS_Version': device_info['os_version'],
+                'Browser': device_info['browser'],
+                'Browser_Version': device_info['browser_version'],
+                'Is_Mobile': device_info['is_mobile'],
+                'Is_Tablet': device_info['is_tablet']
+            }
+        return None
+    except Exception as e:
+        print(f"Error getting session headers: {e}")
+        return None
+
+def terminate_session_by_admin(username, session_id):
+    try:
+        db_path = os.path.join(BASE_DIR, 'hostx.db')
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+        cursor.execute('''
+            UPDATE user_sessions 
+            SET is_active = 0 
+            WHERE username = ? AND session_id = ?
+        ''', (username, session_id))
+        conn.commit()
+        conn.close()
+        
+        log_security_event('session_terminated_by_admin', request.remote_addr, username, 
+                         f'Session {session_id[:8]}... terminated by admin', 'high')
+        return True
+    except:
+        return False
+
+def is_session_valid_advanced(username, session_id):
+    try:
+        db_path = os.path.join(BASE_DIR, 'hostx.db')
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+        cursor.execute('''
+            SELECT is_active FROM user_sessions 
+            WHERE username = ? AND session_id = ?
+        ''', (username, session_id))
+        result = cursor.fetchone()
+        conn.close()
+        
+        return result and result[0] == 1
+    except:
+        return True
+
+init_advanced_session_table()
 
 # ========== DATA FILES ==========
 USERS_FILE = os.path.join(BASE_DIR, 'users.json')
@@ -536,7 +885,6 @@ def get_suspicious_ips():
     except:
         return []
 
-# Initialize database
 init_db()
 
 # ========== DATE PARSING FUNCTIONS ==========
@@ -767,8 +1115,8 @@ def get_network_stats():
 # ========== DEFAULT USERS ==========
 if not os.path.exists(USERS_FILE):
     default_users = {
-        "xza123": {
-            "password": "xza",
+        "admin": {
+            "password": "admin123",
             "role": "admin",
             "ram": "33 GB",
             "storage": "258 GB",
@@ -779,7 +1127,7 @@ if not os.path.exists(USERS_FILE):
         }
     }
     save_users(default_users)
-    print("✅ Default admin user created: xza123 / xza")
+    print("✅ Default admin user created: admin / admin123")
 
 if not os.path.exists(PACKAGES_FILE):
     default_packages = {
@@ -799,6 +1147,120 @@ if not os.path.exists(CUSTOM_ORDERS_FILE):
     save_custom_orders([])
 
 running_processes = {}
+
+# ========== MAIN SECURITY CHECK ==========
+@app.before_request
+def security_check():
+    if request.endpoint in ['banned_page', 'static', 'admin_blocked_countries', 'admin_security', 'login', 'logout', 'refresh_captcha', 'admin_sessions', 'copy_session_headers', 'terminate_session_admin']:
+        return None
+    
+    ip = get_client_ip()
+    
+    if is_ip_banned(ip):
+        return render_template('banned.html', ban_duration=BAN_DURATION_HOURS, ip=ip, reason="Banned"), 403
+    
+    if not rate_limit_check(ip):
+        return render_template('banned.html', ban_duration=BAN_DURATION_HOURS, ip=ip, reason="Rate limit"), 403
+    
+    detect_ddos_behavior(ip, request.endpoint)
+    
+    if 'user' in session and 'session_id' in session:
+        if not is_session_valid_advanced(session['user'], session['session_id']):
+            session.clear()
+            return "❌ Your session has been revoked by admin or logged in from another device!", 401
+    
+    if 'user' in session and not validate_session_fingerprint():
+        session.clear()
+        return "Session hijacking detected!", 403
+    
+    allowed, msg = country_block_check(ip)
+    if not allowed:
+        return msg, 403
+    
+    return None
+
+@app.route('/banned')
+def banned_page():
+    ip = get_client_ip()
+    return render_template('banned.html', ban_duration=BAN_DURATION_HOURS, ip=ip, reason="You have been banned")
+
+# ========== ADMIN SESSION MANAGEMENT ROUTES ==========
+
+@app.route('/admin/sessions')
+def admin_sessions():
+    if 'user' not in session or session.get('role') != 'admin':
+        return "Access Denied", 403
+    
+    all_sessions = get_all_sessions_for_admin()
+    
+    stats = {
+        'total': len(all_sessions),
+        'active': len([s for s in all_sessions if s['is_active']]),
+        'inactive': len([s for s in all_sessions if not s['is_active']]),
+        'unique_users': len(set([s['username'] for s in all_sessions]))
+    }
+    
+    return render_template('admin_sessions.html',
+                         sessions=all_sessions,
+                         stats=stats,
+                         csrf_token=generate_csrf_token())
+
+@app.route('/admin/copy_session_headers/<session_id>')
+def copy_session_headers(session_id):
+    if 'user' not in session or session.get('role') != 'admin':
+        return jsonify({"error": "unauthorized"}), 401
+    
+    headers = get_session_headers_by_id(session_id)
+    if headers:
+        return jsonify(headers)
+    
+    return jsonify({"error": "Session not found"}), 404
+
+@app.route('/admin/terminate_session/<session_id>')
+def terminate_session_admin(session_id):
+    if 'user' not in session or session.get('role') != 'admin':
+        return "Access Denied", 403
+    
+    try:
+        db_path = os.path.join(BASE_DIR, 'hostx.db')
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+        
+        cursor.execute('SELECT username FROM user_sessions WHERE session_id = ?', (session_id,))
+        result = cursor.fetchone()
+        
+        if result:
+            username = result[0]
+            cursor.execute('UPDATE user_sessions SET is_active = 0 WHERE session_id = ?', (session_id,))
+            conn.commit()
+            log_security_event('session_terminated', get_client_ip(), username, 
+                             f'Session {session_id[:8]}... terminated by admin', 'high')
+        
+        conn.close()
+    except:
+        pass
+    
+    return redirect(url_for('admin_sessions'))
+
+@app.route('/admin/terminate_user_sessions/<username>')
+def terminate_user_sessions(username):
+    if 'user' not in session or session.get('role') != 'admin':
+        return "Access Denied", 403
+    
+    try:
+        db_path = os.path.join(BASE_DIR, 'hostx.db')
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+        cursor.execute('UPDATE user_sessions SET is_active = 0 WHERE username = ?', (username,))
+        conn.commit()
+        conn.close()
+        
+        log_security_event('all_sessions_terminated', get_client_ip(), username, 
+                         f'All sessions for {username} terminated by admin', 'critical')
+    except:
+        pass
+    
+    return redirect(url_for('admin_sessions'))
 
 # ========== API ENDPOINTS ==========
 @app.route('/api/get_file_content/<server_id>/<filename>')
@@ -899,7 +1361,7 @@ def system_info():
     os_platform = f"{platform.system()} {platform.release()}"
     python_version = f"{platform.python_version()}"
     server_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    client_ip = request.remote_addr
+    client_ip = get_client_ip()
     return jsonify({
         "hostname": hostname, "os_platform": os_platform,
         "python_version": python_version, "server_time": server_time,
@@ -1327,7 +1789,7 @@ def login():
         username = request.form.get('username', '')
         password = request.form.get('password', '')
         captcha = request.form.get('captcha', '')
-        ip = request.remote_addr
+        ip = get_client_ip()
         
         if captcha != session.get('captcha'):
             return redirect(url_for('login', error='captcha'))
@@ -1349,11 +1811,17 @@ def login():
         if is_account_expired(users[username]):
             return redirect(url_for('login', error='expired'))
         
+        session_id = secrets.token_hex(32)
+        
+        headers = extract_all_headers()
+        
+        save_full_session(username, session_id, ip, headers)
+        
         session['user'] = username
         session['role'] = users[username]['role']
+        session['session_id'] = session_id
         regenerate_session()
         
-        # تسجيل IP المستخدم في قاعدة البيانات
         update_user_ip(username, ip, request.headers.get('User-Agent'))
         log_user_activity(username, 'login', None, ip)
         log_security_event('successful_login', ip, username, f'User {username} logged in from {ip}', 'info')
@@ -1578,7 +2046,7 @@ def add_user():
 
 @app.route('/admin/delete_user/<username>')
 def delete_user(username):
-    if username == "xza123":
+    if username == "admin":
         return "Cannot delete admin"
     users = load_users()
     if username in users:
@@ -1638,18 +2106,21 @@ def logout():
     session.clear()
     return redirect(url_for('login'))
 
+# For Render.com compatibility
+if __name__ != '__main__':
+    # When running on Render, use gunicorn
+    pass
+
 if __name__ == '__main__':
     os.makedirs(os.path.join(BASE_DIR, 'templates'), exist_ok=True)
     os.makedirs(os.path.join(BASE_DIR, 'servers'), exist_ok=True)
     
     print("=" * 60)
-    print("X HOST SERVER - CLOUD PLATFORM")
-    print("Running on: http://0.0.0.0:5000")
-    print("-" * 60)
-    print("Admin Login:")
-    print("   Username: xza123")
-    print("   Password: xza")
-    print("   Expiry Date: 2027-01-08")
+    print("HOST X SERVER MANAGEMENT SYSTEM")
+    print("=" * 60)
+    print(f"Default Admin: admin / admin123")
+    print(f"Server running on port 5000")
     print("=" * 60)
     
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(debug=False, host='0.0.0.0', port=port)
