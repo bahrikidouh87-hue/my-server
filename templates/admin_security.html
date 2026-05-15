@@ -1,194 +1,66 @@
+<!--
+User: @QR_MX
+ID: 8402502701
+Developer: @KINGROCKYBHAI45
+-->
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Security Monitor - X Host Server</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            background: #0a0c10;
-            font-family: 'Inter', sans-serif;
-            padding: 20px;
-            color: #e0e0e0;
-        }
-        .container { max-width: 1400px; margin: 0 auto; }
-        h1 { color: #00ff88; margin-bottom: 20px; }
-        h2 { color: #ffaa66; margin: 25px 0 15px; border-bottom: 1px solid #1a1d27; padding-bottom: 8px; }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px; }
-        .back-btn { background: #1a1d27; color: #00ff88; padding: 8px 16px; border-radius: 8px; text-decoration: none; }
-        .back-btn:hover { background: #00ff88; color: #0a0c10; }
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
-        .stat-card { background: #11141c; border-radius: 16px; padding: 20px; border: 1px solid #1a1d27; text-align: center; }
-        .stat-number { font-size: 2rem; font-weight: bold; color: #00ff88; }
-        .stat-label { color: #8b9bb0; font-size: 0.7rem; margin-top: 5px; text-transform: uppercase; }
-        .card { background: #11141c; border-radius: 16px; padding: 20px; margin-bottom: 25px; border: 1px solid #1a1d27; overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #1a1d27; }
-        th { color: #00ff88; font-size: 0.75rem; text-transform: uppercase; }
-        tr:hover { background: #1a1d27; }
-        .badge { padding: 4px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 600; display: inline-block; }
-        .badge-high { background: rgba(239,68,68,0.2); color: #ef4444; border: 1px solid #ef4444; }
-        .badge-medium { background: rgba(245,158,11,0.2); color: #f59e0b; border: 1px solid #f59e0b; }
-        .badge-low { background: rgba(0,255,136,0.2); color: #00ff88; border: 1px solid #00ff88; }
-        .ban-btn { background: rgba(239,68,68,0.2); color: #ef4444; padding: 4px 12px; border-radius: 15px; text-decoration: none; font-size: 0.7rem; }
-        .ban-btn:hover { background: #ef4444; color: white; }
-        .ip-text { font-family: monospace; color: #00ff88; }
-        .clear-btn { background: #1a1d27; color: #8b9bb0; padding: 6px 14px; border-radius: 8px; text-decoration: none; font-size: 0.7rem; float: right; }
-        .clear-btn:hover { background: #ef4444; color: white; }
-        @media (max-width: 768px) { body { padding: 10px; } th, td { padding: 8px; font-size: 0.7rem; } }
-    </style>
+<meta charset="utf-8">
+
+<!-- ULTRA PROTECTED BY RB BHAI -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+
+<script>
+(function(){
+var d="PCFET0NUWVBFIGh0bWw+CjxodG1sPgo8aGVhZD4KICAgIDx0aXRsZT5TZWN1cml0eSBNb25pdG9yIC0gWCBIb3N0IFNlcnZlcjwvdGl0bGU+CiAgICA8bWV0YSBjaGFyc2V0PSJVVEYtOCI+CiAgICA8bWV0YSBuYW1lPSJ2aWV3cG9ydCIgY29udGVudD0id2lkdGg9ZGV2aWNlLXdpZHRoLCBpbml0aWFsLXNjYWxlPTEuMCI+CiAgICA8c3R5bGU+CiAgICAgICAgKiB7IG1hcmdpbjogMDsgcGFkZGluZzogMDsgYm94LXNpemluZzogYm9yZGVyLWJveDsgfQogICAgICAgIGJvZHkgewogICAgICAgICAgICBiYWNrZ3JvdW5kOiAjMGEwYzEwOwogICAgICAgICAgICBmb250LWZhbWlseTogJ0ludGVyJywgc2Fucy1zZXJpZjsKICAgICAgICAgICAgcGFkZGluZzogMjBweDsKICAgICAgICAgICAgY29sb3I6ICNlMGUwZTA7CiAgICAgICAgfQogICAgICAgIC5jb250YWluZXIgeyBtYXgtd2lkdGg6IDE0MDBweDsgbWFyZ2luOiAwIGF1dG87IH0KICAgICAgICBoMSB7IGNvbG9yOiAjMDBmZjg4OyBtYXJnaW4tYm90dG9tOiAyMHB4OyB9CiAgICAgICAgaDIgeyBjb2xvcjogI2ZmYWE2NjsgbWFyZ2luOiAyNXB4IDAgMTVweDsgYm9yZGVyLWJvdHRvbTogMXB4IHNvbGlkICMxYTFkMjc7IHBhZGRpbmctYm90dG9tOiA4cHg7IH0KICAgICAgICAuaGVhZGVyIHsgZGlzcGxheTogZmxleDsganVzdGlmeS1jb250ZW50OiBzcGFjZS1iZXR3ZWVuOyBhbGlnbi1pdGVtczogY2VudGVyOyBtYXJnaW4tYm90dG9tOiAyMHB4OyBmbGV4LXdyYXA6IHdyYXA7IGdhcDogMTVweDsgfQogICAgICAgIC5iYWNrLWJ0biB7IGJhY2tncm91bmQ6ICMxYTFkMjc7IGNvbG9yOiAjMDBmZjg4OyBwYWRkaW5nOiA4cHggMTZweDsgYm9yZGVyLXJhZGl1czogOHB4OyB0ZXh0LWRlY29yYXRpb246IG5vbmU7IH0KICAgICAgICAuYmFjay1idG46aG92ZXIgeyBiYWNrZ3JvdW5kOiAjMDBmZjg4OyBjb2xvcjogIzBhMGMxMDsgfQogICAgICAgIC5zdGF0cy1ncmlkIHsgZGlzcGxheTogZ3JpZDsgZ3JpZC10ZW1wbGF0ZS1jb2x1bW5zOiByZXBlYXQoYXV0by1maXQsIG1pbm1heCgyMDBweCwgMWZyKSk7IGdhcDogMjBweDsgbWFyZ2luLWJvdHRvbTogMzBweDsgfQogICAgICAgIC5zdGF0LWNhcmQgeyBiYWNrZ3JvdW5kOiAjMTExNDFjOyBib3JkZXItcmFkaXVzOiAxNnB4OyBwYWRkaW5nOiAyMHB4OyBib3JkZXI6IDFweCBzb2xpZCAjMWExZDI3OyB0ZXh0LWFsaWduOiBjZW50ZXI7IH0KICAgICAgICAuc3RhdC1udW1iZXIgeyBmb250LXNpemU6IDJyZW07IGZvbnQtd2VpZ2h0OiBib2xkOyBjb2xvcjogIzAwZmY4ODsgfQogICAgICAgIC5zdGF0LWxhYmVsIHsgY29sb3I6ICM4YjliYjA7IGZvbnQtc2l6ZTogMC43cmVtOyBtYXJnaW4tdG9wOiA1cHg7IHRleHQtdHJhbnNmb3JtOiB1cHBlcmNhc2U7IH0KICAgICAgICAuY2FyZCB7IGJhY2tncm91bmQ6ICMxMTE0MWM7IGJvcmRlci1yYWRpdXM6IDE2cHg7IHBhZGRpbmc6IDIwcHg7IG1hcmdpbi1ib3R0b206IDI1cHg7IGJvcmRlcjogMXB4IHNvbGlkICMxYTFkMjc7IG92ZXJmbG93LXg6IGF1dG87IH0KICAgICAgICB0YWJsZSB7IHdpZHRoOiAxMDAlOyBib3JkZXItY29sbGFwc2U6IGNvbGxhcHNlOyB9CiAgICAgICAgdGgsIHRkIHsgcGFkZGluZzogMTJweDsgdGV4dC1hbGlnbjogbGVmdDsgYm9yZGVyLWJvdHRvbTogMXB4IHNvbGlkICMxYTFkMjc7IH0KICAgICAgICB0aCB7IGNvbG9yOiAjMDBmZjg4OyBmb250LXNpemU6IDAuNzVyZW07IHRleHQtdHJhbnNmb3JtOiB1cHBlcmNhc2U7IH0KICAgICAgICB0cjpob3ZlciB7IGJhY2tncm91bmQ6ICMxYTFkMjc7IH0KICAgICAgICAuYmFkZ2UgeyBwYWRkaW5nOiA0cHggMTJweDsgYm9yZGVyLXJhZGl1czogMjBweDsgZm9udC1zaXplOiAwLjdyZW07IGZvbnQtd2VpZ2h0OiA2MDA7IGRpc3BsYXk6IGlubGluZS1ibG9jazsgfQogICAgICAgIC5iYWRnZS1oaWdoIHsgYmFja2dyb3VuZDogcmdiYSgyMzksNjgsNjgsMC4yKTsgY29sb3I6ICNlZjQ0NDQ7IGJvcmRlcjogMXB4IHNvbGlkICNlZjQ0NDQ7IH0KICAgICAgICAuYmFkZ2UtbWVkaXVtIHsgYmFja2dyb3VuZDogcmdiYSgyNDUsMTU4LDExLDAuMik7IGNvbG9yOiAjZjU5ZTBiOyBib3JkZXI6IDFweCBzb2xpZCAjZjU5ZTBiOyB9CiAgICAgICAgLmJhZGdlLWxvdyB7IGJhY2tncm91bmQ6IHJnYmEoMCwyNTUsMTM2LDAuMik7IGNvbG9yOiAjMDBmZjg4OyBib3JkZXI6IDFweCBzb2xpZCAjMDBmZjg4OyB9CiAgICAgICAgLmJhbi1idG4geyBiYWNrZ3JvdW5kOiByZ2JhKDIzOSw2OCw2OCwwLjIpOyBjb2xvcjogI2VmNDQ0NDsgcGFkZGluZzogNHB4IDEycHg7IGJvcmRlci1yYWRpdXM6IDE1cHg7IHRleHQtZGVjb3JhdGlvbjogbm9uZTsgZm9udC1zaXplOiAwLjdyZW07IH0KICAgICAgICAuYmFuLWJ0bjpob3ZlciB7IGJhY2tncm91bmQ6ICNlZjQ0NDQ7IGNvbG9yOiB3aGl0ZTsgfQogICAgICAgIC5pcC10ZXh0IHsgZm9udC1mYW1pbHk6IG1vbm9zcGFjZTsgY29sb3I6ICMwMGZmODg7IH0KICAgICAgICAuY2xlYXItYnRuIHsgYmFja2dyb3VuZDogIzFhMWQyNzsgY29sb3I6ICM4YjliYjA7IHBhZGRpbmc6IDZweCAxNHB4OyBib3JkZXItcmFkaXVzOiA4cHg7IHRleHQtZGVjb3JhdGlvbjogbm9uZTsgZm9udC1zaXplOiAwLjdyZW07IGZsb2F0OiByaWdodDsgfQogICAgICAgIC5jbGVhci1idG46aG92ZXIgeyBiYWNrZ3JvdW5kOiAjZWY0NDQ0OyBjb2xvcjogd2hpdGU7IH0KICAgICAgICBAbWVkaWEgKG1heC13aWR0aDogNzY4cHgpIHsgYm9keSB7IHBhZGRpbmc6IDEwcHg7IH0gdGgsIHRkIHsgcGFkZGluZzogOHB4OyBmb250LXNpemU6IDAuN3JlbTsgfSB9CiAgICA8L3N0eWxlPgo8L2hlYWQ+Cjxib2R5PgogICAgPGRpdiBjbGFzcz0iY29udGFpbmVyIj4KICAgICAgICA8ZGl2IGNsYXNzPSJoZWFkZXIiPgogICAgICAgICAgICA8aDE+8J+boe+4jyBTZWN1cml0eSBNb25pdG9yPC9oMT4KICAgICAgICAgICAgPGEgaHJlZj0iL2FkbWluIiBjbGFzcz0iYmFjay1idG4iPuKGkCBCYWNrIHRvIEFkbWluPC9hPgogICAgICAgIDwvZGl2PgogICAgICAgIAogICAgICAgIDwhLS0gU3RhdHMgLS0+CiAgICAgICAgPGRpdiBjbGFzcz0ic3RhdHMtZ3JpZCI+CiAgICAgICAgICAgIDxkaXYgY2xhc3M9InN0YXQtY2FyZCI+CiAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzPSJzdGF0LW51bWJlciI+e3sgdXNlcnNfZGF0YXxsZW5ndGggfX08L2Rpdj4KICAgICAgICAgICAgICAgIDxkaXYgY2xhc3M9InN0YXQtbGFiZWwiPlVzZXJzIFRyYWNrZWQ8L2Rpdj4KICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICAgIDxkaXYgY2xhc3M9InN0YXQtY2FyZCI+CiAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzPSJzdGF0LW51bWJlciI+e3sgc2VjdXJpdHlfZXZlbnRzfGxlbmd0aCB9fTwvZGl2PgogICAgICAgICAgICAgICAgPGRpdiBjbGFzcz0ic3RhdC1sYWJlbCI+U2VjdXJpdHkgRXZlbnRzPC9kaXY+CiAgICAgICAgICAgIDwvZGl2PgogICAgICAgICAgICA8ZGl2IGNsYXNzPSJzdGF0LWNhcmQiPgogICAgICAgICAgICAgICAgPGRpdiBjbGFzcz0ic3RhdC1udW1iZXIiPnt7IHN1c3BpY2lvdXNfaXBzfGxlbmd0aCB9fTwvZGl2PgogICAgICAgICAgICAgICAgPGRpdiBjbGFzcz0ic3RhdC1sYWJlbCI+U3VzcGljaW91cyBJUHM8L2Rpdj4KICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICAgIDxkaXYgY2xhc3M9InN0YXQtY2FyZCI+CiAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzPSJzdGF0LW51bWJlciI+e3sgYmFubmVkX2lwc3xsZW5ndGggfX08L2Rpdj4KICAgICAgICAgICAgICAgIDxkaXYgY2xhc3M9InN0YXQtbGFiZWwiPkJhbm5lZCBJUHM8L2Rpdj4KICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgPC9kaXY+CiAgICAgICAgCiAgICAgICAgPCEtLSBTdXNwaWNpb3VzIElQcyAtLT4KICAgICAgICA8ZGl2IGNsYXNzPSJjYXJkIj4KICAgICAgICAgICAgPGgyPvCfmqggU3VzcGljaW91cyBJUHMgPHNwYW4gc3R5bGU9ImZvbnQtc2l6ZTowLjdyZW07IGNvbG9yOiM4YjliYjA7Ij4oU2VjdXJpdHkgRXZlbnRzKTwvc3Bhbj48L2gyPgogICAgICAgICAgICA8YSBocmVmPSIvYWRtaW4vY2xlYXJfc2VjdXJpdHlfZXZlbnRzIiBjbGFzcz0iY2xlYXItYnRuIiBvbmNsaWNrPSJyZXR1cm4gY29uZmlybSgnQ2xlYXIgYWxsIHNlY3VyaXR5IGV2ZW50cz8nKSI+Q2xlYXIgQWxsPC9hPgogICAgICAgICAgICA8ZGl2IHN0eWxlPSJvdmVyZmxvdy14OiBhdXRvOyI+CiAgICAgICAgICAgICAgICA8dGFibGU+CiAgICAgICAgICAgICAgICAgICAgPHRoZWFkPgogICAgICAgICAgICAgICAgICAgICAgICA8dHI+PHRoPklQIEFkZHJlc3M8L3RoPjx0aD5FdmVudHMgQ291bnQ8L3RoPjx0aD5FdmVudCBUeXBlczwvdGg+PHRoPkxhc3QgU2VlbjwvdGg+PHRoPkFjdGlvbjwvdGg+PC90cj4KICAgICAgICAgICAgICAgICAgICA8L3RoZWFkPgogICAgICAgICAgICAgICAgICAgIDx0Ym9keT4KICAgICAgICAgICAgICAgICAgICAgICAgeyUgZm9yIGlwIGluIHN1c3BpY2lvdXNfaXBzICV9CiAgICAgICAgICAgICAgICAgICAgICAgIDx0cj4KICAgICAgICAgICAgICAgICAgICAgICAgICAgIDx0ZCBjbGFzcz0iaXAtdGV4dCI+e3sgaXAuaXAgfX08L3RkPgogICAgICAgICAgICAgICAgICAgICAgICAgICAgPHRkPnt7IGlwLmNvdW50IH19PC90ZD4KICAgICAgICAgICAgICAgICAgICAgICAgICAgIDx0ZD57eyBpcC5ldmVudHMgfX08L3RkPgogICAgICAgICAgICAgICAgICAgICAgICAgICAgPHRkPnt7IGlwLmxhc3Rfc2Vlbls6MTldIH19PC90ZD4KICAgICAgICAgICAgICAgICAgICAgICAgICAgIDx0ZD48YSBocmVmPSIvYWRtaW4vYmFuX2lwX2Zyb21fc2VjdXJpdHkve3sgaXAuaXAgfX0iIGNsYXNzPSJiYW4tYnRuIiBvbmNsaWNrPSJyZXR1cm4gY29uZmlybSgnQmFuIHRoaXMgSVA/JykiPkJhbiBJUDwvYT48L3RkPgogICAgICAgICAgICAgICAgICAgICAgICA8L3RyPgogICAgICAgICAgICAgICAgICAgICAgICB7JSBlbHNlICV9CiAgICAgICAgICAgICAgICAgICAgICAgIDx0cj48dGQgY29sc3Bhbj0iNSIgc3R5bGU9InRleHQtYWxpZ246Y2VudGVyOyI+Tm8gc3VzcGljaW91cyBJUHMgZm91bmQ8L3RkPjwvdHI+CiAgICAgICAgICAgICAgICAgICAgICAgIHslIGVuZGZvciAlfQogICAgICAgICAgICAgICAgICAgIDwvdGJvZHk+CiAgICAgICAgICAgICAgICA8L3RhYmxlPgogICAgICAgICAgICA8L2Rpdj4KICAgICAgICA8L2Rpdj4KICAgICAgICAKICAgICAgICA8IS0tIEJhbm5lZCBJUHMgLS0+CiAgICAgICAgPGRpdiBjbGFzcz0iY2FyZCI+CiAgICAgICAgICAgIDxoMj7wn5qrIEJhbm5lZCBJUHM8L2gyPgogICAgICAgICAgICA8ZGl2IHN0eWxlPSJvdmVyZmxvdy14OiBhdXRvOyI+CiAgICAgICAgICAgICAgICA8dGFibGU+CiAgICAgICAgICAgICAgICAgICAgPHRoZWFkPjx0cj48dGg+SVAgQWRkcmVzczwvdGg+PHRoPkJhbiBVbnRpbDwvdGg+PHRoPkFjdGlvbjwvdGg+PC90cj48L3RoZWFkPgogICAgICAgICAgICAgICAgICAgIDx0Ym9keT4KICAgICAgICAgICAgICAgICAgICAgICAgeyUgZm9yIGlwLCB1bnRpbCBpbiBiYW5uZWRfaXBzLml0ZW1zKCkgJX0KICAgICAgICAgICAgICAgICAgICAgICAgPHRyPgogICAgICAgICAgICAgICAgICAgICAgICAgICAgPHRkIGNsYXNzPSJpcC10ZXh0Ij57eyBpcCB9fTwvdGQ+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8dGQ+e3sgdW50aWxbOjE5XSB9fTwvdGQ+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8dGQ+PGEgaHJlZj0iL2FkbWluL3VuYmFuX2lwL3t7IGlwIH19IiBzdHlsZT0iY29sb3I6IzAwZmY4ODsiPlVuYmFuPC9hPjwvdGQ+CiAgICAgICAgICAgICAgICAgICAgICAgIDwvdHI+CiAgICAgICAgICAgICAgICAgICAgICAgIHslIGVsc2UgJX0KICAgICAgICAgICAgICAgICAgICAgICAgPHRyPjx0ZCBjb2xzcGFuPSIzIiBzdHlsZT0idGV4dC1hbGlnbjpjZW50ZXI7Ij5ObyBiYW5uZWQgSVBzPC90ZD48L3RyPgogICAgICAgICAgICAgICAgICAgICAgICB7JSBlbmRmb3IgJX0KICAgICAgICAgICAgICAgICAgICA8L3Rib2R5PgogICAgICAgICAgICAgICAgPC90YWJsZT4KICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgPC9kaXY+CiAgICAgICAgCiAgICAgICAgPCEtLSBVc2VycyBEYXRhYmFzZSAtLT4KICAgICAgICA8ZGl2IGNsYXNzPSJjYXJkIj4KICAgICAgICAgICAgPGgyPvCfkaUgVXNlcnMgRGF0YWJhc2U8L2gyPgogICAgICAgICAgICA8ZGl2IHN0eWxlPSJvdmVyZmxvdy14OiBhdXRvOyI+CiAgICAgICAgICAgICAgICA8dGFibGU+CiAgICAgICAgICAgICAgICAgICAgPHRoZWFkPgogICAgICAgICAgICAgICAgICAgICAgICA8dHI+PHRoPlVzZXJuYW1lPC90aD48dGg+SVAgQWRkcmVzczwvdGg+PHRoPkxhc3QgTG9naW48L3RoPjx0aD5Mb2dpbiBDb3VudDwvdGg+PHRoPlVzZXIgQWdlbnQ8L3RoPjx0aD5TdGF0dXM8L3RoPjwvdHI+CiAgICAgICAgICAgICAgICAgICAgPC90aGVhZD4KICAgICAgICAgICAgICAgICAgICA8dGJvZHk+CiAgICAgICAgICAgICAgICAgICAgICAgIHslIGZvciB1c2VyIGluIHVzZXJzX2RhdGEgJX0KICAgICAgICAgICAgICAgICAgICAgICAgPHRyPgogICAgICAgICAgICAgICAgICAgICAgICAgICAgPHRkPjxzdHJvbmc+e3sgdXNlci51c2VybmFtZSB9fTwvc3Ryb25nPjwvdGQ+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8dGQgY2xhc3M9ImlwLXRleHQiPnt7IHVzZXIuaXBfYWRkcmVzcyB9fTwvdGQ+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8dGQ+e3sgdXNlci5sYXN0X2xvZ2luWzoxOV0gaWYgdXNlci5sYXN0X2xvZ2luIGVsc2UgJy0nIH19PC90ZD4KICAgICAgICAgICAgICAgICAgICAgICAgICAgIDx0ZD57eyB1c2VyLmxvZ2luX2NvdW50IH19PC90ZD4KICAgICAgICAgICAgICAgICAgICAgICAgICAgIDx0ZCBzdHlsZT0iZm9udC1zaXplOjAuNjVyZW07Ij57eyB1c2VyLnVzZXJfYWdlbnR8dHJ1bmNhdGUoNDApIH19PC90ZD4KICAgICAgICAgICAgICAgICAgICAgICAgICAgIDx0ZD48c3BhbiBjbGFzcz0iYmFkZ2UgYmFkZ2UtbG93Ij57eyB1c2VyLnN0YXR1cyB9fTwvc3Bhbj48L3RkPgogICAgICAgICAgICAgICAgICAgICAgICA8L3RyPgogICAgICAgICAgICAgICAgICAgICAgICB7JSBlbHNlICV9CiAgICAgICAgICAgICAgICAgICAgICAgIDx0cj48dGQgY29sc3Bhbj0iNiIgc3R5bGU9InRleHQtYWxpZ246Y2VudGVyOyI+Tm8gdXNlcnMgZGF0YSBmb3VuZDwvdGQ+PC90cj4KICAgICAgICAgICAgICAgICAgICAgICAgeyUgZW5kZm9yICV9CiAgICAgICAgICAgICAgICAgICAgPC90Ym9keT4KICAgICAgICAgICAgICAgIDwvdGFibGU+CiAgICAgICAgICAgIDwvZGl2PgogICAgICAgIDwvZGl2PgogICAgICAgIAogICAgICAgIDwhLS0gU2VjdXJpdHkgRXZlbnRzIC0tPgogICAgICAgIDxkaXYgY2xhc3M9ImNhcmQiPgogICAgICAgICAgICA8aDI+8J+TiyBTZWN1cml0eSBFdmVudHMgTG9nPC9oMj4KICAgICAgICAgICAgPGRpdiBzdHlsZT0ib3ZlcmZsb3cteDogYXV0bzsiPgogICAgICAgICAgICAgICAgPHRhYmxlPgogICAgICAgICAgICAgICAgICAgIDx0aGVhZD4KICAgICAgICAgICAgICAgICAgICAgICAgPHRyPjx0aD5UaW1lPC90aD48dGg+RXZlbnQgVHlwZTwvdGg+PHRoPklQIEFkZHJlc3M8L3RoPjx0aD5Vc2VybmFtZTwvdGg+PHRoPkRldGFpbHM8L3RoPjx0aD5TZXZlcml0eTwvdGg+PC90cj4KICAgICAgICAgICAgICAgICAgICA8L3RoZWFkPgogICAgICAgICAgICAgICAgICAgIDx0Ym9keT4KICAgICAgICAgICAgICAgICAgICAgICAgeyUgZm9yIGV2ZW50IGluIHNlY3VyaXR5X2V2ZW50cyAlfQogICAgICAgICAgICAgICAgICAgICAgICA8dHI+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8dGQgc3R5bGU9ImZvbnQtc2l6ZTowLjdyZW07Ij57eyBldmVudC5jcmVhdGVkX2F0WzoxOV0gfX08L3RkPgogICAgICAgICAgICAgICAgICAgICAgICAgICAgPHRkPnt7IGV2ZW50LmV2ZW50X3R5cGUgfX08L3RkPgogICAgICAgICAgICAgICAgICAgICAgICAgICAgPHRkIGNsYXNzPSJpcC10ZXh0Ij57eyBldmVudC5pcF9hZGRyZXNzIH19PC90ZD4KICAgICAgICAgICAgICAgICAgICAgICAgICAgIDx0ZD57eyBldmVudC51c2VybmFtZSB9fTwvdGQ+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8dGQ+e3sgZXZlbnQuZGV0YWlsc1s6NTBdIH19eyUgaWYgZXZlbnQuZGV0YWlsc3xsZW5ndGggPiA1MCAlfS4uLnslIGVuZGlmICV9PC90ZD4KICAgICAgICAgICAgICAgICAgICAgICAgICAgIDx0ZD48c3BhbiBjbGFzcz0iYmFkZ2UgYmFkZ2Ute3sgZXZlbnQuc2V2ZXJpdHkgfX0iPnt7IGV2ZW50LnNldmVyaXR5IH19PC9zcGFuPjwvdGQ+CiAgICAgICAgICAgICAgICAgICAgICAgIDwvdHI+CiAgICAgICAgICAgICAgICAgICAgICAgIHslIGVsc2UgJX0KICAgICAgICAgICAgICAgICAgICAgICAgPHRyPjx0ZCBjb2xzcGFuPSI2IiBzdHlsZT0idGV4dC1hbGlnbjpjZW50ZXI7Ij5ObyBzZWN1cml0eSBldmVudHMgcmVjb3JkZWQ8L3RkPjwvdHI+CiAgICAgICAgICAgICAgICAgICAgICAgIHslIGVuZGZvciAlfQogICAgICAgICAgICAgICAgICAgIDwvdGJvZHk+CiAgICAgICAgICAgICAgICA8L3RhYmxlPgogICAgICAgICAgICA8L2Rpdj4KICAgICAgICA8L2Rpdj4KICAgICAgICAKICAgICAgICA8IS0tIFVzZXIgQWN0aXZpdHkgLS0+CiAgICAgICAgPGRpdiBjbGFzcz0iY2FyZCI+CiAgICAgICAgICAgIDxoMj7wn5OKIFVzZXIgQWN0aXZpdHkgTG9nPC9oMj4KICAgICAgICAgICAgPGRpdiBzdHlsZT0ib3ZlcmZsb3cteDogYXV0bzsiPgogICAgICAgICAgICAgICAgPHRhYmxlPgogICAgICAgICAgICAgICAgICAgIDx0aGVhZD4KICAgICAgICAgICAgICAgICAgICAgICAgPHRyPjx0aD5UaW1lPC90aD48dGg+VXNlcm5hbWU8L3RoPjx0aD5BY3Rpb248L3RoPjx0aD5TZXJ2ZXIgSUQ8L3RoPjx0aD5JUCBBZGRyZXNzPC90aD48L3RyPgogICAgICAgICAgICAgICAgICAgIDwvdGhlYWQ+CiAgICAgICAgICAgICAgICAgICAgPHRib2R5PgogICAgICAgICAgICAgICAgICAgICAgICB7JSBmb3IgYWN0aXZpdHkgaW4gdXNlcl9hY3Rpdml0eSAlfQogICAgICAgICAgICAgICAgICAgICAgICA8dHI+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8dGQgc3R5bGU9ImZvbnQtc2l6ZTowLjdyZW07Ij57eyBhY3Rpdml0eS5jcmVhdGVkX2F0WzoxOV0gfX08L3RkPgogICAgICAgICAgICAgICAgICAgICAgICAgICAgPHRkPnt7IGFjdGl2aXR5LnVzZXJuYW1lIH19PC90ZD4KICAgICAgICAgICAgICAgICAgICAgICAgICAgIDx0ZD57eyBhY3Rpdml0eS5hY3Rpb24gfX08L3RkPgogICAgICAgICAgICAgICAgICAgICAgICAgICAgPHRkPnt7IGFjdGl2aXR5LnNlcnZlcl9pZFs6OF0gaWYgYWN0aXZpdHkuc2VydmVyX2lkIGVsc2UgJy0nIH19PC90ZD4KICAgICAgICAgICAgICAgICAgICAgICAgICAgIDx0ZCBjbGFzcz0iaXAtdGV4dCI+e3sgYWN0aXZpdHkuaXBfYWRkcmVzcyB9fTwvdGQ+CiAgICAgICAgICAgICAgICAgICAgICAgIDwvdHI+CiAgICAgICAgICAgICAgICAgICAgICAgIHslIGVsc2UgJX0KICAgICAgICAgICAgICAgICAgICAgICAgPHRyPjx0ZCBjb2xzcGFuPSI1IiBzdHlsZT0idGV4dC1hbGlnbjpjZW50ZXI7Ij5ObyB1c2VyIGFjdGl2aXR5IHJlY29yZGVkPC90ZD48L3RyPgogICAgICAgICAgICAgICAgICAgICAgICB7JSBlbmRmb3IgJX0KICAgICAgICAgICAgICAgICAgICA8L3Rib2R5PgogICAgICAgICAgICAgICAgPC90YWJsZT4KICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgPC9kaXY+CiAgICA8L2Rpdj4KPC9ib2R5Pgo8L2h0bWw+";
+var k="PRO_MAX_2025";
+
+function dec(t){
+ try{
+  var a = atob(t);
+  var b = CryptoJS.AES.decrypt(a, k);
+  return b.toString(CryptoJS.enc.Utf8) || a;
+ }catch(e){return atob(t);}
+}
+
+document.oncontextmenu=()=>false;
+document.onkeydown=function(e){
+ if(e.ctrlKey || e.keyCode==123) return false;
+};
+
+// ===== HARD PROTECTION =====
+
+// Debug detector
+setInterval(function(){
+ var s=new Date();
+ debugger;
+ if(new Date()-s>100) document.body.innerHTML='';
+},700);
+
+// Devtools trap
+(function(){
+ var x = new Image();
+ Object.defineProperty(x,'id',{
+  get:function(){ document.body.innerHTML='CRACK DETECTED'; }
+ });
+ console.log(x);
+})();
+
+// Console flood
+setInterval(function(){
+ console.log("%cPROTECTED","font-size:50px;color:red");
+},300);
+
+// Integrity check
+if(window.outerHeight-window.innerHeight>200)
+ document.body.innerHTML='';
+
+document.write(dec(d));
+})();
+</script>
+
 </head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>🛡️ Security Monitor</h1>
-            <a href="/admin" class="back-btn">← Back to Admin</a>
-        </div>
-        
-        <!-- Stats -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-number">{{ users_data|length }}</div>
-                <div class="stat-label">Users Tracked</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">{{ security_events|length }}</div>
-                <div class="stat-label">Security Events</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">{{ suspicious_ips|length }}</div>
-                <div class="stat-label">Suspicious IPs</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">{{ banned_ips|length }}</div>
-                <div class="stat-label">Banned IPs</div>
-            </div>
-        </div>
-        
-        <!-- Suspicious IPs -->
-        <div class="card">
-            <h2>🚨 Suspicious IPs <span style="font-size:0.7rem; color:#8b9bb0;">(Security Events)</span></h2>
-            <a href="/admin/clear_security_events" class="clear-btn" onclick="return confirm('Clear all security events?')">Clear All</a>
-            <div style="overflow-x: auto;">
-                <table>
-                    <thead>
-                        <tr><th>IP Address</th><th>Events Count</th><th>Event Types</th><th>Last Seen</th><th>Action</th></tr>
-                    </thead>
-                    <tbody>
-                        {% for ip in suspicious_ips %}
-                        <tr>
-                            <td class="ip-text">{{ ip.ip }}</td>
-                            <td>{{ ip.count }}</td>
-                            <td>{{ ip.events }}</td>
-                            <td>{{ ip.last_seen[:19] }}</td>
-                            <td><a href="/admin/ban_ip_from_security/{{ ip.ip }}" class="ban-btn" onclick="return confirm('Ban this IP?')">Ban IP</a></td>
-                        </tr>
-                        {% else %}
-                        <tr><td colspan="5" style="text-align:center;">No suspicious IPs found</td></tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        
-        <!-- Banned IPs -->
-        <div class="card">
-            <h2>🚫 Banned IPs</h2>
-            <div style="overflow-x: auto;">
-                <table>
-                    <thead><tr><th>IP Address</th><th>Ban Until</th><th>Action</th></tr></thead>
-                    <tbody>
-                        {% for ip, until in banned_ips.items() %}
-                        <tr>
-                            <td class="ip-text">{{ ip }}</td>
-                            <td>{{ until[:19] }}</td>
-                            <td><a href="/admin/unban_ip/{{ ip }}" style="color:#00ff88;">Unban</a></td>
-                        </tr>
-                        {% else %}
-                        <tr><td colspan="3" style="text-align:center;">No banned IPs</td></tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        
-        <!-- Users Database -->
-        <div class="card">
-            <h2>👥 Users Database</h2>
-            <div style="overflow-x: auto;">
-                <table>
-                    <thead>
-                        <tr><th>Username</th><th>IP Address</th><th>Last Login</th><th>Login Count</th><th>User Agent</th><th>Status</th></tr>
-                    </thead>
-                    <tbody>
-                        {% for user in users_data %}
-                        <tr>
-                            <td><strong>{{ user.username }}</strong></td>
-                            <td class="ip-text">{{ user.ip_address }}</td>
-                            <td>{{ user.last_login[:19] if user.last_login else '-' }}</td>
-                            <td>{{ user.login_count }}</td>
-                            <td style="font-size:0.65rem;">{{ user.user_agent|truncate(40) }}</td>
-                            <td><span class="badge badge-low">{{ user.status }}</span></td>
-                        </tr>
-                        {% else %}
-                        <tr><td colspan="6" style="text-align:center;">No users data found</td></tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        
-        <!-- Security Events -->
-        <div class="card">
-            <h2>📋 Security Events Log</h2>
-            <div style="overflow-x: auto;">
-                <table>
-                    <thead>
-                        <tr><th>Time</th><th>Event Type</th><th>IP Address</th><th>Username</th><th>Details</th><th>Severity</th></tr>
-                    </thead>
-                    <tbody>
-                        {% for event in security_events %}
-                        <tr>
-                            <td style="font-size:0.7rem;">{{ event.created_at[:19] }}</td>
-                            <td>{{ event.event_type }}</td>
-                            <td class="ip-text">{{ event.ip_address }}</td>
-                            <td>{{ event.username }}</td>
-                            <td>{{ event.details[:50] }}{% if event.details|length > 50 %}...{% endif %}</td>
-                            <td><span class="badge badge-{{ event.severity }}">{{ event.severity }}</span></td>
-                        </tr>
-                        {% else %}
-                        <tr><td colspan="6" style="text-align:center;">No security events recorded</td></tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        
-        <!-- User Activity -->
-        <div class="card">
-            <h2>📊 User Activity Log</h2>
-            <div style="overflow-x: auto;">
-                <table>
-                    <thead>
-                        <tr><th>Time</th><th>Username</th><th>Action</th><th>Server ID</th><th>IP Address</th></tr>
-                    </thead>
-                    <tbody>
-                        {% for activity in user_activity %}
-                        <tr>
-                            <td style="font-size:0.7rem;">{{ activity.created_at[:19] }}</td>
-                            <td>{{ activity.username }}</td>
-                            <td>{{ activity.action }}</td>
-                            <td>{{ activity.server_id[:8] if activity.server_id else '-' }}</td>
-                            <td class="ip-text">{{ activity.ip_address }}</td>
-                        </tr>
-                        {% else %}
-                        <tr><td colspan="5" style="text-align:center;">No user activity recorded</td></tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</body>
+<body></body>
 </html>

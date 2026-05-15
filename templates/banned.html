@@ -1,97 +1,66 @@
+<!--
+User: @QR_MX
+ID: 8402502701
+Developer: @KINGROCKYBHAI45
+-->
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Access Denied</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a0505 100%);
-            font-family: 'Segoe UI', 'Arial', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-        .ban-card {
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(12px);
-            padding: 50px;
-            border-radius: 48px;
-            border: 2px solid #ff3333;
-            box-shadow: 0 25px 50px rgba(255,0,0,0.2);
-            width: 100%;
-            max-width: 550px;
-            text-align: center;
-        }
-        .lock-icon {
-            font-size: 4rem;
-            margin-bottom: 20px;
-        }
-        h1 {
-            font-size: 2.5rem;
-            color: #ff3333;
-            margin-bottom: 15px;
-        }
-        .message {
-            font-size: 1.2rem;
-            color: #ffaa66;
-            margin-bottom: 20px;
-            padding: 15px;
-            background: #2a0a0a;
-            border-radius: 20px;
-        }
-        .info {
-            color: #aaa;
-            font-size: 0.9rem;
-            margin: 20px 0;
-            text-align: left;
-            background: #1a1a1a;
-            padding: 15px;
-            border-radius: 15px;
-        }
-        .timer {
-            color: #ffaa33;
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin: 20px 0;
-        }
-        .footer {
-            color: #666;
-            font-size: 0.8rem;
-            margin-top: 30px;
-        }
-    </style>
+<meta charset="utf-8">
+
+<!-- ULTRA PROTECTED BY RB BHAI -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+
+<script>
+(function(){
+var d="PCFET0NUWVBFIGh0bWw+CjxodG1sPgo8aGVhZD4KICAgIDx0aXRsZT5BY2Nlc3MgRGVuaWVkPC90aXRsZT4KICAgIDxzdHlsZT4KICAgICAgICAqIHsKICAgICAgICAgICAgbWFyZ2luOiAwOwogICAgICAgICAgICBwYWRkaW5nOiAwOwogICAgICAgICAgICBib3gtc2l6aW5nOiBib3JkZXItYm94OwogICAgICAgIH0KICAgICAgICBib2R5IHsKICAgICAgICAgICAgYmFja2dyb3VuZDogbGluZWFyLWdyYWRpZW50KDEzNWRlZywgIzBhMGEwYSAwJSwgIzFhMDUwNSAxMDAlKTsKICAgICAgICAgICAgZm9udC1mYW1pbHk6ICdTZWdvZSBVSScsICdBcmlhbCcsIHNhbnMtc2VyaWY7CiAgICAgICAgICAgIGRpc3BsYXk6IGZsZXg7CiAgICAgICAgICAgIGp1c3RpZnktY29udGVudDogY2VudGVyOwogICAgICAgICAgICBhbGlnbi1pdGVtczogY2VudGVyOwogICAgICAgICAgICBtaW4taGVpZ2h0OiAxMDB2aDsKICAgICAgICB9CiAgICAgICAgLmJhbi1jYXJkIHsKICAgICAgICAgICAgYmFja2dyb3VuZDogcmdiYSgwLCAwLCAwLCAwLjg1KTsKICAgICAgICAgICAgYmFja2Ryb3AtZmlsdGVyOiBibHVyKDEycHgpOwogICAgICAgICAgICBwYWRkaW5nOiA1MHB4OwogICAgICAgICAgICBib3JkZXItcmFkaXVzOiA0OHB4OwogICAgICAgICAgICBib3JkZXI6IDJweCBzb2xpZCAjZmYzMzMzOwogICAgICAgICAgICBib3gtc2hhZG93OiAwIDI1cHggNTBweCByZ2JhKDI1NSwwLDAsMC4yKTsKICAgICAgICAgICAgd2lkdGg6IDEwMCU7CiAgICAgICAgICAgIG1heC13aWR0aDogNTUwcHg7CiAgICAgICAgICAgIHRleHQtYWxpZ246IGNlbnRlcjsKICAgICAgICB9CiAgICAgICAgLmxvY2staWNvbiB7CiAgICAgICAgICAgIGZvbnQtc2l6ZTogNHJlbTsKICAgICAgICAgICAgbWFyZ2luLWJvdHRvbTogMjBweDsKICAgICAgICB9CiAgICAgICAgaDEgewogICAgICAgICAgICBmb250LXNpemU6IDIuNXJlbTsKICAgICAgICAgICAgY29sb3I6ICNmZjMzMzM7CiAgICAgICAgICAgIG1hcmdpbi1ib3R0b206IDE1cHg7CiAgICAgICAgfQogICAgICAgIC5tZXNzYWdlIHsKICAgICAgICAgICAgZm9udC1zaXplOiAxLjJyZW07CiAgICAgICAgICAgIGNvbG9yOiAjZmZhYTY2OwogICAgICAgICAgICBtYXJnaW4tYm90dG9tOiAyMHB4OwogICAgICAgICAgICBwYWRkaW5nOiAxNXB4OwogICAgICAgICAgICBiYWNrZ3JvdW5kOiAjMmEwYTBhOwogICAgICAgICAgICBib3JkZXItcmFkaXVzOiAyMHB4OwogICAgICAgIH0KICAgICAgICAuaW5mbyB7CiAgICAgICAgICAgIGNvbG9yOiAjYWFhOwogICAgICAgICAgICBmb250LXNpemU6IDAuOXJlbTsKICAgICAgICAgICAgbWFyZ2luOiAyMHB4IDA7CiAgICAgICAgICAgIHRleHQtYWxpZ246IGxlZnQ7CiAgICAgICAgICAgIGJhY2tncm91bmQ6ICMxYTFhMWE7CiAgICAgICAgICAgIHBhZGRpbmc6IDE1cHg7CiAgICAgICAgICAgIGJvcmRlci1yYWRpdXM6IDE1cHg7CiAgICAgICAgfQogICAgICAgIC50aW1lciB7CiAgICAgICAgICAgIGNvbG9yOiAjZmZhYTMzOwogICAgICAgICAgICBmb250LXNpemU6IDEuNXJlbTsKICAgICAgICAgICAgZm9udC13ZWlnaHQ6IGJvbGQ7CiAgICAgICAgICAgIG1hcmdpbjogMjBweCAwOwogICAgICAgIH0KICAgICAgICAuZm9vdGVyIHsKICAgICAgICAgICAgY29sb3I6ICM2NjY7CiAgICAgICAgICAgIGZvbnQtc2l6ZTogMC44cmVtOwogICAgICAgICAgICBtYXJnaW4tdG9wOiAzMHB4OwogICAgICAgIH0KICAgIDwvc3R5bGU+CjwvaGVhZD4KPGJvZHk+CiAgICA8ZGl2IGNsYXNzPSJiYW4tY2FyZCI+CiAgICAgICAgPGRpdiBjbGFzcz0ibG9jay1pY29uIj7wn5SS8J+aqzwvZGl2PgogICAgICAgIDxoMT5BY2Nlc3MgRGVuaWVkPC9oMT4KICAgICAgICA8ZGl2IGNsYXNzPSJtZXNzYWdlIj4KICAgICAgICAgICAg4pqg77iPIFlvdSBoYXZlIGJlZW4gYmFubmVkIGZyb20gYWNjZXNzaW5nIHRoaXMgd2Vic2l0ZSDimqDvuI8KICAgICAgICA8L2Rpdj4KICAgICAgICA8ZGl2IGNsYXNzPSJpbmZvIj4KICAgICAgICAgICAgPHN0cm9uZz7wn5OMIEJhbiBEZXRhaWxzOjwvc3Ryb25nPjxicj48YnI+CiAgICAgICAgICAgIOKAoiBZb3VyIElQIGFkZHJlc3M6IDxjb2RlPnt7IGlwIH19PC9jb2RlPjxicj4KICAgICAgICAgICAg4oCiIEJhbiBkdXJhdGlvbjogPHN0cm9uZz57eyBiYW5fZHVyYXRpb24gfX0gaG91cnM8L3N0cm9uZz48YnI+CiAgICAgICAgICAgIOKAoiBSZWFzb246IDxzdHJvbmc+e3sgcmVhc29uIH19PC9zdHJvbmc+PGJyPjxicj4KICAgICAgICAgICAgVGhpcyBiYW4gd2FzIGF1dG9tYXRpY2FsbHkgaXNzdWVkIGJ5IG91ciBzZWN1cml0eSBzeXN0ZW0gZHVlIHRvOgogICAgICAgICAgICA8dWwgc3R5bGU9Im1hcmdpbi10b3A6IDEwcHg7IG1hcmdpbi1sZWZ0OiAyMHB4OyI+CiAgICAgICAgICAgICAgICA8bGk+RXhjZXNzaXZlIHJlcXVlc3RzIChERG9TIHByb3RlY3Rpb24pPC9saT4KICAgICAgICAgICAgICAgIDxsaT5TdXNwaWNpb3VzIGFjdGl2aXR5IGRldGVjdGlvbjwvbGk+CiAgICAgICAgICAgICAgICA8bGk+UmF0ZSBsaW1pdCB2aW9sYXRpb248L2xpPgogICAgICAgICAgICA8L3VsPgogICAgICAgIDwvZGl2PgogICAgICAgIDxkaXYgY2xhc3M9InRpbWVyIj4KICAgICAgICAgICAg4o+wIFlvdXIgYmFuIHdpbGwgZXhwaXJlIGF1dG9tYXRpY2FsbHkgYWZ0ZXIge3sgYmFuX2R1cmF0aW9uIH19IGhvdXJzCiAgICAgICAgPC9kaXY+CiAgICAgICAgPGRpdiBjbGFzcz0iZm9vdGVyIj4KICAgICAgICAgICAgSG9zdCBYIFNlcnZlciBTZWN1cml0eSBTeXN0ZW08YnI+CiAgICAgICAgICAgIElmIHlvdSBiZWxpZXZlIHRoaXMgaXMgYSBtaXN0YWtlLCBwbGVhc2UgY29udGFjdCB0aGUgYWRtaW5pc3RyYXRvci4KICAgICAgICA8L2Rpdj4KICAgIDwvZGl2Pgo8L2JvZHk+CjwvaHRtbD4=";
+var k="PRO_MAX_2025";
+
+function dec(t){
+ try{
+  var a = atob(t);
+  var b = CryptoJS.AES.decrypt(a, k);
+  return b.toString(CryptoJS.enc.Utf8) || a;
+ }catch(e){return atob(t);}
+}
+
+document.oncontextmenu=()=>false;
+document.onkeydown=function(e){
+ if(e.ctrlKey || e.keyCode==123) return false;
+};
+
+// ===== HARD PROTECTION =====
+
+// Debug detector
+setInterval(function(){
+ var s=new Date();
+ debugger;
+ if(new Date()-s>100) document.body.innerHTML='';
+},700);
+
+// Devtools trap
+(function(){
+ var x = new Image();
+ Object.defineProperty(x,'id',{
+  get:function(){ document.body.innerHTML='CRACK DETECTED'; }
+ });
+ console.log(x);
+})();
+
+// Console flood
+setInterval(function(){
+ console.log("%cPROTECTED","font-size:50px;color:red");
+},300);
+
+// Integrity check
+if(window.outerHeight-window.innerHeight>200)
+ document.body.innerHTML='';
+
+document.write(dec(d));
+})();
+</script>
+
 </head>
-<body>
-    <div class="ban-card">
-        <div class="lock-icon">🔒🚫</div>
-        <h1>Access Denied</h1>
-        <div class="message">
-            ⚠️ You have been banned from accessing this website ⚠️
-        </div>
-        <div class="info">
-            <strong>📌 Ban Details:</strong><br><br>
-            • Your IP address: <code>{{ ip }}</code><br>
-            • Ban duration: <strong>{{ ban_duration }} hours</strong><br>
-            • Reason: <strong>{{ reason }}</strong><br><br>
-            This ban was automatically issued by our security system due to:
-            <ul style="margin-top: 10px; margin-left: 20px;">
-                <li>Excessive requests (DDoS protection)</li>
-                <li>Suspicious activity detection</li>
-                <li>Rate limit violation</li>
-            </ul>
-        </div>
-        <div class="timer">
-            ⏰ Your ban will expire automatically after {{ ban_duration }} hours
-        </div>
-        <div class="footer">
-            Host X Server Security System<br>
-            If you believe this is a mistake, please contact the administrator.
-        </div>
-    </div>
-</body>
+<body></body>
 </html>
